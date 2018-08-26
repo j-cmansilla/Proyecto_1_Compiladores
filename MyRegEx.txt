@@ -1,0 +1,67 @@
+Expresiones regulares utilizadas en el proyecto
+
+1. LineTerminator = \r|\n|\r\n
+2. InputCharacter = [^\r\n]
+3. Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+4. TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+5. EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
+6. DocumentationComment = "/**" {CommentContent} "*"+ "/"
+7. CommentContent       = ( [^*] | \*+ [^/*] )*
+8. PalabraReservada = "callable"|"null"|"abstract"|"as"|"case"|"catch"|"class"|"clone"|"declare"|"default"|"die"|"echo"|"enddeclare"|"eval"|"exit"|"extends"|"final"|"finally"|"implements"|"global"|"goto"|"include_once"|"instanceof"|"insteadof"|"interface"|"isset"|"new"|"print"|"list"|"namespace"|"private"|"protected"|"public"|"require"|"require_once"|"static"|"throw"|"trait"|"try"|"unset"|"use"|"var"|"yield"
+9. constantesPredefinidas = "__LINE__"|"__FILE__"|"__DIR__"|"__FUNCTION__"|"__CLASS__"|"__TRAIT__"|"__METHOD__"|"__NAMESPACE__"
+10. variablesPredefinidas = "$GLOBALS"|"$_SERVER"|"$_GET"|"$_POST"|"$_FILES"|"$_REQUEST"|"$_SESSION"|"$_ENV"|"$_COOKIE"|"$php_errormsg"|"$HTTP_RAW_POST_DATA"|"$http_response_header"|"$argc"|"$argv"
+11. argumentoBD = "[" "`" {Espacio}* {identificador} {Espacio}*  "`" "]"
+12. accesoBD = "$recordset"
+13. operadoresA = "+"|"-"|"*"|"/"|"**"|"%"|"++"|"--"|"^"
+14. operadoresL = "and"|"or"|"xor"|"!"|"&&"|"||"|"not"|"|"|"&"
+15. identificador = ({L}|"_") ({L}|{D}|"_")*
+16. real = "-"{D}{D}*"."{D}*|{D}{D}*"."{D}*
+17. constante = "define" | "const"
+18. variableError = "$" {D}({L}|{D}|"_")* | {D}({L}|{D}|"_")*
+19. comillas = [\"]
+20. especialChars = "*"|"-" | "/" | "_" | "." | "," | "~" | "!" | "@" | "#" | "$" | "%" | "'" | "^" | "&" | "|" | "(" | ")" |" {" | "}" | \"\" |"["|"]"|"<"|">"|"?"|"="|"+"|":"|";"|"'"
+21. texto = "'" ({Espacio}* {L}* {especialChars}* {D}*)* {Espacio}* "'" | {comillas} ({Espacio}* {L}* {especialChars}* {D}*)* {Espacio}* {comillas}
+22. comilla = '
+23. tipoDeDatoL = "true"|"false"
+24. Espacio = [ ]
+25. WHITE=[ \t\r\n]
+26. L = [a-zA-Z_]
+27. D = [0-9] 
+28. Entero = ("(-"{D}+")")|{D}+
+29. Slash = \\" 
+30. DefiniciónDeVariable = "$" 
+31. EstructuraDeControlIf = "if"
+32. ParentesisQueAbre = "(" 
+33. Arroba = "@"
+34. SignoInte = "?"
+35. EstructuraDeControlReturn = "return" 
+36. ParentesisQueCierra = ")"
+37. EstructuraDeControlElse = "else" 
+38. EstructuraDeControlBreak = "break" 
+39. EstructuraDeControlWhile = "while"
+40. EstructuraDeControlDo = "do" 
+41. EstructuraDeControlFor = "for" 
+42. TipoDeDatoBooleano = "bool"|"boolean"
+43. EstructuraDeControlForEach = "foreach"
+44. EstructuraDeControlSwitch = "switch" 
+45. EstructuraDeControlInclude = "include"
+56. EstructuraDeControlContinue = "continue"
+57. DeclaraFuncion = "function"
+58. InicioPhp = "<?php"
+59. CierrePhp = "?>"
+60. LlaveQueAbre = "{"
+61. LlaveQueCierra = "}"
+62. Asignacion = "="|"=>"|"&="|".="|"/="
+63. Igualacion = "==" 
+64. Diferenciacion = "!="
+65. FinalDeLinea = ";"
+66. Separacion = "," 
+67. Punto = "." 
+68. EtiquetaQueAbre = "<"
+69. EtiquetaQueCierra = ">" 
+70. CorcheteQueAbre = "[" 
+71. CorcheteQueCierra = "]" 
+72. DosPuntos = ":" 
+73. AnotherComment = "#" ({Espacio}* {L}* {especialChars}* {D}*)*
+74. ErrArgumentoBD = "[" "`" ({Espacio}* {L}* {especialChars}* {D}*)*  "`" "]"
+
