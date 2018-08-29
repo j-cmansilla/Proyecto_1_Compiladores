@@ -17,7 +17,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String path = "C:\\Users\\Jose Mansilla\\Documents\\Proyecto_1_AnalizadorLexico-master\\analizadorLexico-Java\\src\\analizador\\Lexer.flex";
+        String path = "C:\\Users\\Jose Mansilla\\Documents\\2018\\Universidad\\Segundo ciclo\\Compiladores\\Proyecto_1_Compiladores\\analizadorLexico-Java\\src\\analizador\\Lexer.flex";
         generarLexer(path);
 
     }

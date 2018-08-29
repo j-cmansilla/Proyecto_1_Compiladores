@@ -588,10 +588,24 @@ public class interfaz extends javax.swing.JFrame {
                     tokenslist.add(tokenitem);
                 break;
                 case ID: {
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Identificador";
-                    tokenslist.add(tokenitem);
+                    if (lexer.lexeme.length() > 31) {
+                        concatenado = lexer.lexeme.substring(0, 31);
+                        tokenitem.nombre = concatenado;
+                        tokenitem.tipo="Identificador";
+                        tokenslist.add(tokenitem);
+                        tokenitem=new TokenEvaluado();
+                        errores++;
+                        listaErrores.add("Error, símbolo "+lexer.lexeme.substring(32, lexer.lexeme.length()-1)+" no reconocido. "+"Línea: "+(lexer.linea+1));
+                        resultado=resultado+ "Error, símbolo "+lexer.lexeme.substring(32, lexer.lexeme.length()-1)+" no reconocido. "+"Línea: "+(1+lexer.linea)+System.getProperty("line.separator");
+                        tokenitem.nombre=lexer.lexeme.substring(32, lexer.lexeme.length()-1);
+                        tokenitem.tipo="NO RECONOCIDO";
+                        tokenslist.add(tokenitem);
+                    }else{
+                        concatenado = lexer.lexeme;
+                        tokenitem.nombre=lexer.lexeme;
+                        tokenitem.tipo="Identificador";
+                        tokenslist.add(tokenitem);
+                    }
                     break;
                 }
                 case INT:

@@ -10,7 +10,7 @@ LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 Comment = {TraditionalComment} | {EndOfLineComment} 
 TraditionalComment   = "/*" [^*] ~"*/"
-ComentarioError   = "/*" [^*] !"*/"
+ComentarioError   = "/*" [^*]+
 EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 
@@ -25,14 +25,16 @@ PalabraReservada = "void"|"int"|"double"|"bool"|"string"|"class"|"interface"|"nu
 operadoresA = "+"|"-"|"*"|"/"|"%"|"<"|"<="|">"|">="|"="|"=="|"!="|"&&"|"||"|"!"|";"|","|"."|"["|"]"|"[]"|"("|")"|"()"|"{"|"}"|"{}"
 
 //Identificadores
-identificador = ({L}|"_") ({L}|{D}|"_"){1,31}
+identificador = ({L}|"_") ({L}|{D}|"_")*
 
 //Numeros reales
 real = "-"({D}{D}*"."{D}*|{D}{D}*"."{D}*"E"("+"|"-"){D}*)|({D}{D}*"."{D}*|{D}{D}*"."{D}*"E"("+"|"-"){D}*)
 hexadecimal = "0X"({D}|("A"|"B"|"C"|"D"|"E"|"F"))*
 
 //Comillas y textos
-texto = "\"" ~"\""
+texto = \"([^\\\"\r\n]|{ESCAPE_SEQUENCE}|(\\[\r\n]))*?(\"|\\)?
+tex = "\"" ~"\""
+ESCAPE_SEQUENCE=\\[^\r\n]
 
 textoError = "\"" ~[\n]
 
@@ -60,14 +62,14 @@ public int linea;
 /*COMENTARIOS*/
 
 /*COMENTARIOS*/
-{ComentarioError} {lexeme=yytext(); return ERROR;}
 {Comment} {lexeme=yytext(); return COMMENT;}
+{ComentarioError} {lexeme=yytext(); linea = yyline; return ERROR;}
 {hexadecimal} {{lexeme=yytext(); return HEXA;}}
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return INT;}
 
 
 /* TEXTOS, ESPACIOS EN LAS LINEAS */
-/*{textoError} {lexeme=yytext(); return ERROR;}*/
+{textoError} {lexeme=yytext(); linea = yyline; return ERROR;}
 {texto} {lexeme=yytext(); return TEXTO;}
 
 {WHITE} {lexeme=yytext(); return ESPACIO;}
@@ -81,7 +83,7 @@ public int linea;
 {tipoDeDatoL} {lexeme=yytext(); return TIPODEDATOL;}
 
 /*IDENTIFICADOR*/
-{identificador} {lexeme=yytext(); return ID;}
+{identificador} {lexeme=yytext(); linea = yyline; return ID;}
 
 
 
