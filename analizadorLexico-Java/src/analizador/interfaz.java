@@ -472,10 +472,19 @@ public class interfaz extends javax.swing.JFrame {
                     tokenslist.add(tokenitem);
                     break;
                 case OPERADORARITMETICO:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Operador Aritmético";
-                    tokenslist.add(tokenitem);
+                    if(lexer.lexeme.contains(".") && lexer.lexeme.length() > 1){
+                        errores++;
+                        listaErrores.add("Error, símbolo "+lexer.lexeme+" no reconocido. "+"Línea: "+(lexer.linea+1));
+                        resultado=resultado+ "Error, símbolo "+lexer.lexeme+" no reconocido. "+"Línea: "+(1+lexer.linea)+System.getProperty("line.separator");
+                        tokenitem.nombre=lexer.lexeme;
+                        tokenitem.tipo="NO RECONOCIDO";
+                        tokenslist.add(tokenitem);
+                    }else{
+                        concatenado = lexer.lexeme;
+                        tokenitem.nombre=lexer.lexeme;
+                        tokenitem.tipo="Operador Aritmético";
+                        tokenslist.add(tokenitem);
+                    }
                     break;
                 case COMA:
                     concatenado = lexer.lexeme;
@@ -611,7 +620,7 @@ public class interfaz extends javax.swing.JFrame {
                 case INT:
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Entero";
+                    tokenitem.tipo="Entero decimal";
                     tokenslist.add(tokenitem);
                     break;
                 case HEXA:

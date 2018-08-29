@@ -23,7 +23,7 @@ PalabraReservada = "void"|"int"|"double"|"bool"|"string"|"class"|"interface"|"nu
 
 //Operadores lógicos y aritméticos
 operadoresA = "+"|"-"|"*"|"/"|"%"|"<"|"<="|">"|">="|"="|"=="|"!="|"&&"|"||"|"!"|";"|","|"."|"["|"]"|"[]"|"("|")"|"()"|"{"|"}"|"{}"
-
+operadorAE = "."~(\n)
 //Identificadores
 identificador = ({L}|"_") ({L}|{D}|"_")*
 
@@ -76,7 +76,8 @@ public int linea;
 
 
 /*OPERADORES ARITMETICOS Y LOGICOS*/
-{operadoresA} {lexeme=yytext(); return OPERADORARITMETICO;}
+{operadorAE} {lexeme=yytext();linea = yyline; return OPERADORARITMETICO;}
+{operadoresA} {lexeme=yytext();linea = yyline; return OPERADORARITMETICO;}
 /*COMILLAS*/
 
 /*TIPOS DE DATO LOGICOS*/
