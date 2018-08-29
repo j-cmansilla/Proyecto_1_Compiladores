@@ -57,20 +57,20 @@ public int linea;
 %%
 
 /*PALABRAS RESERVADAS, VARIABLES Y CONSTANTES, TIPOS DE DATO Y ACCESO A LA BASE DE DATOS */
-{PalabraReservada} {lexeme=yytext(); return PALABRARESERVADA;}
-{real} {{lexeme=yytext(); return REAL;}}
+{PalabraReservada} {lexeme=yytext();linea = yyline; return PALABRARESERVADA;}
+{real} {{lexeme=yytext();linea = yyline; return REAL;}}
 /*COMENTARIOS*/
 
 /*COMENTARIOS*/
-{Comment} {lexeme=yytext(); return COMMENT;}
+{Comment} {lexeme=yytext();linea = yyline; return COMMENT;}
 {ComentarioError} {lexeme=yytext(); linea = yyline; return ERROR;}
-{hexadecimal} {{lexeme=yytext(); return HEXA;}}
-("(-"{D}+")")|{D}+ {lexeme=yytext(); return INT;}
+{hexadecimal} {{lexeme=yytext();linea = yyline; return HEXA;}}
+("(-"{D}+")")|{D}+ {lexeme=yytext();linea = yyline; return INT;}
 
 
 /* TEXTOS, ESPACIOS EN LAS LINEAS */
 {textoError} {lexeme=yytext(); linea = yyline; return ERROR;}
-{texto} {lexeme=yytext(); return TEXTO;}
+{texto} {lexeme=yytext(); linea = yyline; return TEXTO;}
 
 {WHITE} {lexeme=yytext(); return ESPACIO;}
 
@@ -81,7 +81,7 @@ public int linea;
 /*COMILLAS*/
 
 /*TIPOS DE DATO LOGICOS*/
-{tipoDeDatoL} {lexeme=yytext(); return TIPODEDATOL;}
+{tipoDeDatoL} {lexeme=yytext();linea = yyline; return TIPODEDATOL;}
 
 /*IDENTIFICADOR*/
 {identificador} {lexeme=yytext(); linea = yyline; return ID;}
