@@ -11,6 +11,9 @@
 
 package analizador;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -50,7 +53,7 @@ public class interfaz extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+		this.setLocationRelativeTo(null);
         menuBar1 = new java.awt.MenuBar();
         menu1 = new java.awt.Menu();
         menu2 = new java.awt.Menu();
@@ -103,7 +106,7 @@ public class interfaz extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel3.setText("Analizador Léxico");
+        jLabel3.setText("MINI C# - ANALIZADOR DE LÉXICO");
 
         menuSubir.setText("Subir Archivo");
         menuSubir.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -137,31 +140,33 @@ public class interfaz extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(319, 319, 319)
-                        .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(390, 390, 390)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(textArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -179,6 +184,9 @@ public class interfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
     public String filePath;
+    
+    
+    
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
         // TODO add your handling code here:
        
@@ -216,6 +224,9 @@ public class interfaz extends javax.swing.JFrame {
     /**
     * @param args the command line arguments
     */
+    
+    
+    
     public static void main(String args[]) throws IOException {
         File err = new File(DEFAULT_ERR_FILE);
         File directorio = new File("C:\\MINICSHARP");
@@ -230,7 +241,7 @@ public class interfaz extends javax.swing.JFrame {
     
     private String newOut="";
     private ArrayList listaErrores;
-    private static final String DEFAULT_ERR_FILE = "Output.err";
+    private static final String DEFAULT_ERR_FILE = "Output.out";
     
     public void IniciarProcesoDeSalida(){
         Writer writer = null;
@@ -289,183 +300,26 @@ public class interfaz extends javax.swing.JFrame {
             switch (token){
                 case ESPACIO:
                     concatenado = lexer.lexeme;
-                break;
-                case ARGBD:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Argumento acceso base de datos";
-                    concatenado = lexer.lexeme.toUpperCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case SIGNIN:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Signo interrogación";
-                    tokenslist.add(tokenitem);
-                break;    
-                case FUN:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Función";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case ARR:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Arroba";
-                    tokenslist.add(tokenitem);
-                break;         
-                case SLASH:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Slash";
-                    tokenslist.add(tokenitem);
-                break;        
-                case ETI:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Etiqueta inicial";
-                    tokenslist.add(tokenitem);
-                break;
-                case ETF:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Etiqueta final";
-                    tokenslist.add(tokenitem);
-                break;
-                case PAI:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Corchete inicial";
-                    tokenslist.add(tokenitem);
-                break;
-                case PAF:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Corchete final";
-                    tokenslist.add(tokenitem);
-                break;
-                case PUNTO:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="punto";
-                    tokenslist.add(tokenitem);
-                break;
-                case CONSTP:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Constante predefinida";
-                    concatenado = lexer.lexeme.toUpperCase();
-                    tokenslist.add(tokenitem);
-                break;        
+                break;                
                 case REAL:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Double. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Double. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Numero real";
-                    tokenslist.add(tokenitem);
-                break; 
-                case DOSPUNTOS:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Dos puntos";
-                    tokenslist.add(tokenitem);
-                break; 
-                case BOOL:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Booleano";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case CONSTANTE:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Definición de una constante";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case ACCDB:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Acceso a la base de datos";
-                    tokenslist.add(tokenitem);
-                break;
-                case VARPRE:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Variable predefinida";
-                    concatenado = lexer.lexeme.toUpperCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case SELEC:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control switch";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case INCLUI:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control include";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case CONTIN:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control continue";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case RET:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control return";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
-                case BREA:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control break";
-                    concatenado = lexer.lexeme.toLowerCase();
+                    tokenitem.tipo="Double";
                     tokenslist.add(tokenitem);
                 break;
                 case COMMENT:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Comentario. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Comentario. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Comentario";
                     tokenslist.add(tokenitem);
                     break;
-                case ELS:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control else";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                    break;
-                case MIENTR:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control while";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                    break;
-                case HMIENTR:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control do-while";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                    break;
-                case PARA:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control for";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                    break;
-                case PARAC:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control foreach";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                    break;
-                case COMILLA:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Comilla";
-                    tokenslist.add(tokenitem);
-                    break;
                 case PALABRARESERVADA:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Palabra reservada. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Palabra reservada. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Palabra reservada";
                     concatenado = lexer.lexeme.toLowerCase();
@@ -480,43 +334,33 @@ public class interfaz extends javax.swing.JFrame {
                         tokenitem.tipo="NO RECONOCIDO";
                         tokenslist.add(tokenitem);
                     }else{
+                        listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Operador Aritmetico. "+" Línea: "+(lexer.linea+1));
+                        resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Operador Aritmetico. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                         concatenado = lexer.lexeme;
                         tokenitem.nombre=lexer.lexeme;
                         tokenitem.tipo="Operador Aritmético";
                         tokenslist.add(tokenitem);
                     }
                     break;
-                case COMA:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Coma";
-                    tokenslist.add(tokenitem);
-                    break;
-                case SI:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Sentencia de control if";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                break;
                 case CADENA:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: String. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: String. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Cadena de texto";
                     tokenslist.add(tokenitem);
                     break;
-                case ENT:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Tipo de dato entero";
-                    tokenslist.add(tokenitem);
-                    break;
                 case REA:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Tipo de dato double. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Tipo de dato double. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Tipo de dato real";
+                    tokenitem.tipo="Tipo de dato double";
                     tokenslist.add(tokenitem);
                     break;
                 case TIPODEDATOL:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Tipo de dato logico. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Tipo de dato logico. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Tipo de dato lógico";
@@ -530,74 +374,26 @@ public class interfaz extends javax.swing.JFrame {
                     tokenitem.tipo="NO RECONOCIDO";
                     tokenslist.add(tokenitem);
                 break;
-                case PUNTOYCOMA:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Fin de línea";
-                    tokenslist.add(tokenitem);
-                    break;
                 case OPERADORLOGICO:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Tipo de dato logico. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Tipo de dato logico. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Operador lógico";
                     tokenslist.add(tokenitem);
                     break;
-                case INICIOPHP:
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Inicio php";
-                    concatenado = lexer.lexeme.toLowerCase();
-                    tokenslist.add(tokenitem);
-                    break;
-                case FINPHP:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Fin php";
-                    tokenslist.add(tokenitem);
-                break;
-                case LLAVEA:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Llave inicial";
-                    tokenslist.add(tokenitem);
-                break;
-                case LLAVEC:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Llave final";
-                    tokenslist.add(tokenitem);
-                break;
-                case ASIGNACION:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Operador de asignación";
-                    tokenslist.add(tokenitem);
-                break;
-                case COMPARACION:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Operador de comparación";
-                    tokenslist.add(tokenitem);
-                break;
-                case DIFERENTE:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Operador de diferencia";
-                    tokenslist.add(tokenitem);
-                break;
                 case TEXTO:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: String. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: String. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Texto";
                     tokenslist.add(tokenitem);
                 break;
-                case VARIABLE:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Declaracion de variable";
-                    tokenslist.add(tokenitem);
-                break;
                 case ID: {
                     if (lexer.lexeme.length() > 31) {
+                        listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Identificador. "+" Línea: "+(lexer.linea+1));
+                        resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Identificador. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                         concatenado = lexer.lexeme.substring(0, 31);
                         tokenitem.nombre = concatenado;
                         tokenitem.tipo="Identificador";
@@ -610,6 +406,8 @@ public class interfaz extends javax.swing.JFrame {
                         tokenitem.tipo="NO RECONOCIDO";
                         tokenslist.add(tokenitem);
                     }else{
+                        listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Identificador. "+" Línea: "+(lexer.linea+1));
+                        resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Identificador. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                         concatenado = lexer.lexeme;
                         tokenitem.nombre=lexer.lexeme;
                         tokenitem.tipo="Identificador";
@@ -618,29 +416,21 @@ public class interfaz extends javax.swing.JFrame {
                     break;
                 }
                 case INT:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Entero decimal. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Entero decimal. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Entero decimal";
                     tokenslist.add(tokenitem);
                     break;
                 case HEXA:
+                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Entero hexadecimal. "+" Línea: "+(lexer.linea+1));
+                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Entero hexadecimal. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Hexadecimal";
                     tokenslist.add(tokenitem);
                     break;
-                case PAA:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Paréntesis inicial";
-                    tokenslist.add(tokenitem);
-                break;
-                case PAC:
-                    concatenado = lexer.lexeme;
-                    tokenitem.nombre=lexer.lexeme;
-                    tokenitem.tipo="Paréntesis final";
-                    tokenslist.add(tokenitem);
-                break;
                 default:
                     
             }
