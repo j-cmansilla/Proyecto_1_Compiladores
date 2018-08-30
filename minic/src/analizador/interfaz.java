@@ -310,8 +310,6 @@ public class interfaz extends javax.swing.JFrame {
                     tokenslist.add(tokenitem);
                 break;
                 case COMMENT:
-                    listaErrores.add("Símbolo "+lexer.lexeme+" reconocido. Es: Comentario. "+" Línea: "+(lexer.linea+1));
-                    resultado=resultado+"Símbolo "+lexer.lexeme+" reconocido. Es: Comentario. "+" Línea: "+(lexer.linea+1)+System.getProperty("line.separator");
                     concatenado = lexer.lexeme;
                     tokenitem.nombre=lexer.lexeme;
                     tokenitem.tipo="Comentario";

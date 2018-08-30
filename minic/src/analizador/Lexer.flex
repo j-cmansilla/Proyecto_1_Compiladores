@@ -9,7 +9,7 @@ import static analizador.Token.*;
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 Comment = {TraditionalComment} | {EndOfLineComment} 
-TraditionalComment   = "/*" [^*] ~"*/"
+TraditionalComment   = "/*" ~"*/"
 ComentarioError   = "/*" [^*]+
 EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
@@ -34,7 +34,7 @@ hexadecimal = "0X"({D}|("A"|"B"|"C"|"D"|"E"|"F"))*
 //Comillas y textos
 texto = \"([^\\\"\r\n]|{ESCAPE_SEQUENCE}|(\\[\r\n]))*?(\"|\\)?
 tex = "\"" ~"\""
-textos = "\"" . "\""
+textos = (\"([^(\")(\n)]|\\\")*\") //\".*?\"
 ESCAPE_SEQUENCE=\\[^\r\n]
 
 textoError = "\"" ~[\n]
@@ -72,7 +72,7 @@ public int linea;
 /* TEXTOS, ESPACIOS EN LAS LINEAS */
 /*{textoError} {lexeme=yytext(); linea = yyline; return ERROR;}*/
 {textos} {lexeme=yytext(); linea = yyline; return TEXTO;}
-"\"" {lexeme=yytext(); linea = yyline; return ERROR;}
+/*"\"" {lexeme=yytext(); linea = yyline; return ERROR;}*/
 {WHITE} {lexeme=yytext(); return ESPACIO;}
 
 
