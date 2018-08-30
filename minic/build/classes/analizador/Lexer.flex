@@ -34,6 +34,7 @@ hexadecimal = "0X"({D}|("A"|"B"|"C"|"D"|"E"|"F"))*
 //Comillas y textos
 texto = \"([^\\\"\r\n]|{ESCAPE_SEQUENCE}|(\\[\r\n]))*?(\"|\\)?
 tex = "\"" ~"\""
+textos = "\"" . "\""
 ESCAPE_SEQUENCE=\\[^\r\n]
 
 textoError = "\"" ~[\n]
@@ -69,9 +70,9 @@ public int linea;
 
 
 /* TEXTOS, ESPACIOS EN LAS LINEAS */
-{textoError} {lexeme=yytext(); linea = yyline; return ERROR;}
-{texto} {lexeme=yytext(); linea = yyline; return TEXTO;}
-
+/*{textoError} {lexeme=yytext(); linea = yyline; return ERROR;}*/
+{textos} {lexeme=yytext(); linea = yyline; return TEXTO;}
+"\"" {lexeme=yytext(); linea = yyline; return ERROR;}
 {WHITE} {lexeme=yytext(); return ESPACIO;}
 
 
