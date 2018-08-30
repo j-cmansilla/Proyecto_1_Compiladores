@@ -17,8 +17,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String path = "C:\\Users\\Jose Mansilla\\Documents\\2018\\Universidad\\Segundo ciclo\\Compiladores\\Proyecto_1_Compiladores\\minic\\src\\analizador\\Lexer.flex";
-        generarLexer(path);
+        String actualPath =  System.getProperty("user.dir");
+        System.out.println(actualPath);
+        actualPath = actualPath+"\\"+"\\src\\analizador\\Lexer.flex";
+        generarLexer(actualPath);
 
     }
     public static void generarLexer(String path){
