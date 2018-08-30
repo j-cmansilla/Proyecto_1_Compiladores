@@ -77,7 +77,7 @@ public int linea;
 
 
 /*OPERADORES ARITMETICOS Y LOGICOS*/
-{operadorAE} {lexeme=yytext();linea = yyline; return OPERADORARITMETICO;}
+/*{operadorAE} {lexeme=yytext();linea = yyline; return OPERADORARITMETICO;}*/
 {operadoresA} {lexeme=yytext();linea = yyline; return OPERADORARITMETICO;}
 /*COMILLAS*/
 
