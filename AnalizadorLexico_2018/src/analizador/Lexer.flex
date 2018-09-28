@@ -28,7 +28,7 @@ operadorAE = "."~(\n)
 identificador = ({L}|"_") ({L}|{D}|"_")*
 
 //Numeros reales
-real = "-"({D}{D}*"."{D}*|{D}{D}*"."{D}*"E"("+"|"-"){D}*)|({D}{D}*"."{D}*|{D}{D}*"."{D}*"E"("+"|"-"){D}*)
+real = "-"({D}{D}*"."{D}*|{D}{D}*"."{D}*("E"|"e")("+"|"-"|""){D}*)|({D}{D}*"."{D}*|{D}{D}*"."{D}*("E"|"e")("+"|"-"|""){D}*)
 hexadecimal = "0X"({D}|("A"|"B"|"C"|"D"|"E"|"F"))*
 
 //Comillas y textos
