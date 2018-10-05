@@ -1,0 +1,218 @@
+ 
+   
+/* ---------------Seccion de declaraciones preliminares--------------------*/
+package analizadores;
+
+/* Import the class java_cup.runtime.*  */
+import java_cup.runtime.*;
+import java.io.FileReader;
+   
+/* Codigo del parser, se copia integramente a la clase final.
+    Agregamos el manejo de errores. */
+parser code {:
+    
+    /* Reporte de error encontrado. */
+    private boolean error = false;
+    public void report_error(String message, Object info) {
+        StringBuilder m = new StringBuilder("Error");
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {                
+                m.append(" in line "+(s.left+1));
+                if (s.right >= 0)
+                    m.append(", column "+(s.right+1));
+            }
+        }
+        m.append(" : "+message);
+        AnalizadorSintacticoInterfaz.getAnalizador().setError(m.toString());
+        AnalizadorSintacticoInterfaz.getAnalizador().error = true;
+        System.err.println(m);
+        error = true;
+
+
+    }
+   
+    /* Cuando se encuentra un error de donde el sistema no puede
+        recuperarse, se lanza un error fatal. Se despliega el mensaje
+        de error y se finaliza la ejecucion. */
+    public void report_fatal_error(String message, Object info) {
+        error = true;
+        AnalizadorSintacticoInterfaz.getAnalizador().error = true;
+        AnalizadorSintacticoInterfaz.getAnalizador().setError("> "+message);
+        report_error(message, info);
+        
+        //System.exit(1);
+    }
+
+    /* Metodo main para garantizar la ejecucion del analizador
+       lexico y sintactico, ademas que se pase como parametro la tabla
+       de simbolos correspondiente. */
+
+    public void analizarSintacticamente(String[] args){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(args[0])));
+            Object result = asin.parse().value;
+            if(!AnalizadorSintacticoInterfaz.getAnalizador().error){
+              AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");      
+            }
+            
+            System.out.println("\n*** Resultados finales ***");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(args[0])));
+            Object result = asin.parse().value;
+            AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");
+            System.out.println("\n*** Resultados finales ***");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+:};
+   
+
+   
+/* ------------Declaracion de simbolos terminales y no terminales---------- */
+   
+/* Terminales (tokens obtenidos por el analizador lexico). */
+
+terminal          OPERADORESA,HEXADECIMAL,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,TDS,CORCH,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
+                  SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,PARENTESIS,CORCH_A,CORCH_C,LL_A,LL_C,LLAVES,NEGACION,M_OC,LEER_EN,
+                  LEER_LIN,PUNTO,DECIMAL,ENTERO,TEXTO,NULO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL;
+   
+/* No terminales usados en la seccion gramatical. */
+non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,InterfaceDecl,Variable,Tipo,Formals,StmtBlock,ClassDecl,Field,
+                        Herencias,Implementar,Prototype,Stmt,Expr,IfStmt,WhileStmt,ForStmt,BreakStmt,ReturnStmt,PrintStmt,RepetirField,
+                        VariableDeclRepetir,SmtmRepetir,ExprRepetir,ElseRepetir,LValue,Constant,Call,Actuals,LibCall,DeclRep,RepVariable,
+                        RepID,RepExpr;
+
+   
+//GRAMATICA   
+    Programa ::= Decl DeclRep
+    ;
+    Decl ::= VariableDecl|
+             FunctionDecl|
+             CalssDecl|
+             InterfaceDecl
+    ;
+    DeclRep ::= Decl DeclRep|
+    ;
+    
+    VariableDecl ::= Variable PUNTOYCOMA
+    ;
+    Variable ::= Tipo IDENTIFICADOR
+    ;
+    Tipo ::= TDE|
+             TDD|
+             TDB|
+             TDS|
+             IDENTIFICADOR|
+             Tipo CORCH
+    ;
+    FunctionDecl ::= Tipo IDENTIFICADOR
+    ;
+    Formals ::= Variable RepVariable COMA|
+    ;
+
+    RepVariable ::= Variable RepVariable|
+    ;
+
+    ClassDecl ::= CLASE IDENTIFICADOR Herencias Implementar PAR_A RepetirField PAR_C
+    ;
+    RepetirField ::= Field RepetirField|
+    ;
+    Herencias ::= HERENCIA IDENTIFICADOR |
+    ;
+    Implementar ::= IMPLEMENTA IDENTIFICADOR RepID COMA |
+    ;
+
+    RepID ::= IDENTIFICADOR RepID|
+    ;
+
+    Field::= VariableDecl|
+             FunctionDecl
+    ;
+    InterfaceDecl ::= INTERFAZ IDENTIFICADOR Prototype
+    ;
+    Prototype ::= Tipo IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA|
+                  VD IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA
+    ;
+    Stmt ::= ExprRepetir PUNTOYCOMA|
+                    IfStmt|
+                    WhileStmt|
+                    ForStmt|
+                    BreakStmt|
+                    ReturnStmt|
+                    PrintStmt|
+                    StmtBlock
+    ;
+    ExprRepetir ::= Expr ExprRepetir |
+    ;
+    StmtBlock ::= VariableDeclRepetir SmtmRepetir
+    ;
+    IfStmt ::= SI PAR_A Expr PAR_C Stmt ElseRepetir
+    ;
+    ElseRepetir ::= SINO Stmt ElseRepetir |
+    ;
+    VariableDeclRepetir ::= VariableDecl VariableDeclRepetir|
+    ;
+    SmtmRepetir ::= Stmt SmtmRepetir | 
+    ;
+    WhileStmt ::= MIENTRAS PAR_A Expr PAR_C 
+    ;
+    ForStmt ::= PARA PAR_A ExprRepetir PUNTOYCOMA Expr PUNTOYCOMA ExprRepetir PAR_C Stmt
+    ;
+    ReturnStmt ::= RETORNA ExprRepetir PUNTOYCOMA
+    ;
+    BreakStmt ::= ROMPE PUNTOYCOMA
+    ;
+    PrintStmt ::= IMPRIMIR PAR_A Expr RepExpr COMA PAR_C PUNTOYCOMA
+    ;
+    
+    
+
+    Expr ::= LValue IGUAL Expr|
+             Constant|
+             LValue|
+             ESTO|
+             Call|
+             PAR_A Expr PAR_C|
+             Expr OPERADORESA Expr|
+             Expr MENOS Expr|
+             Expr IGUAL Expr|
+             MENOS Expr|
+             NEGACION Expr|
+             NUEVO PAR_A IDENTIFICADOR PAR_C|
+             NUEVO_A PAR_A Expr COMA Tipo PAR_C|
+             LEER_EN PARENTESIS|
+             LEER_LIN PARENTESIS|
+             M_OC PAR_A Expr PAR_C 
+    ;
+    LValue ::= IDENTIFICADOR|
+               Expr PUNTO IDENTIFICADOR|
+               Expr CORCH_A Expr CORCH_C
+    ;
+    Call ::= IDENTIFICADOR PAR_A Actuals PAR_C|
+             Expr PUNTO IDENTIFICADOR PAR_A Actuals PAR_C|
+             Expr PUNTO LibCall PAR_A Actuals PAR_C
+    ;
+    LibCall ::= OBTENER_BYTES PAR_A Expr PAR_C|
+                SET_BYTES PAR_A Expr COMA Expr PAR_C
+    ;
+    Actuals ::= Expr RepExpr COMA|
+    ;
+    Constant ::= ENTERO|
+                 DECIMAL|
+                 TDB|
+                 TDS|
+                 NULO
+    ;
+
+    RepExpr ::= Expr RepExpr|
+    ;
