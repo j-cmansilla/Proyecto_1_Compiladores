@@ -56,7 +56,9 @@ public class AnalizadorSintacticoInterfaz extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        txtSalida.setBackground(new java.awt.Color(204, 51, 0));
         txtSalida.setEditable(false);
+        txtSalida.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
         jLabel1.setText("Analizador Sintáctico");
