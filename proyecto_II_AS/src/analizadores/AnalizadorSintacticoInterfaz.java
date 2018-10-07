@@ -56,7 +56,7 @@ public class AnalizadorSintacticoInterfaz extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtSalida.setBackground(new java.awt.Color(204, 51, 0));
+        txtSalida.setBackground(new java.awt.Color(0, 0, 102));
         txtSalida.setEditable(false);
         txtSalida.setForeground(new java.awt.Color(255, 255, 255));
 
