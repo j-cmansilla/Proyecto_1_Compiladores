@@ -68,6 +68,13 @@ Hexadecimal = "0"("X"|"x")({D}|("A"|"B"|"C"|"D"|"E"|"F")|("a"|"b"|"c"|"d"|"e"|"f
 Entero = [1-9]{D}*
 Textos = (\"([^(\")(\n)]|\\\")*\") //\".*?\"
 TipoDeDatoL = "true"|"false"
+LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r\n]
+Comment = {TraditionalComment} | {EndOfLineComment} 
+TraditionalComment   = "/*" ~"*/"
+
+EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
+
 
 
 /* Espacio es un espacio en blanco, tabulador \t, salto de linea 
@@ -94,7 +101,9 @@ TipoDeDatoL = "true"|"false"
       estados intermedios.*/
    
 <YYINITIAL> {
-   
+    {Comment} {} 
+
+    
     ";"     {   System.out.print(yytext()); 
                       return symbol(sym.PUNTOYCOMA, yytext()); }
 
@@ -230,7 +239,7 @@ TipoDeDatoL = "true"|"false"
                       return symbol(sym.ENTERO, yytext()); }
 
     {Hexadecimal}      {   System.out.print(yytext()); 
-                      return symbol(sym.HEXADECIMAL, yytext()); }
+                      return symbol(sym.ENTERO, yytext()); }
                       
                       
     {Identificador}      {   System.out.print(yytext()); 
@@ -240,6 +249,9 @@ TipoDeDatoL = "true"|"false"
 
     /* No hace nada si encuentra el espacio en blanco */
     {WHITE}       { /* ignora el espacio */ } 
+
+      
+
 }
 
 
