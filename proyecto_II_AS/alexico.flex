@@ -65,10 +65,10 @@ OperadoresC = "<"|"<="|">"|">="|"=="|"!="
 OperadoresL = "&&"|"||"
 Identificador = ({L}|"_") ({L}|{D}|"_")*
 //Numeros reales
-Real = "-"({D}{D}*"."{D}*|{D}{D}*"."{D}*("E"|"e")("+"|"-"|""){D}*)|({D}{D}*"."{D}*|{D}{D}*"."{D}*("E"|"e")("+"|"-"|""){D}*)
+Real = [0-9]+\.?[0-9]+([eE]{Entero}.?[0-9]*)?
 Hexadecimal = "0"("X"|"x")({D}|("A"|"B"|"C"|"D"|"E"|"F")|("a"|"b"|"c"|"d"|"e"|"f"))*
-Entero = [1-9]{D}*
-Textos = (\"([^(\")(\n)]|\\\")*\") //\".*?\"
+Entero = [0-9]{D}*
+Textos = (\"([^\"\\\n]|\\.)*\")
 TipoDeDatoL = "true"|"false"
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
@@ -172,9 +172,6 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
     "string" {   System.out.print(yytext());
                 return symbol(sym.TDS, yytext()); }
 
-    "()" {   System.out.print(yytext());
-                return symbol(sym.PARENTESIS, yytext()); }
-
     "[" {   System.out.print(yytext());
                 return symbol(sym.CORCH_A, yytext()); }
 
@@ -261,4 +258,4 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 /* Si el token contenido en la entrada no coincide con ninguna regla
     entonces se marca un token ilegal */
-.                    { AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token: ''"+yytext()+"'' , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");}
+.                    { AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");}
