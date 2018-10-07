@@ -253,7 +253,7 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
     /* No hace nada si encuentra el espacio en blanco */
     {WHITE}       { /* ignora el espacio */ }
-
+    {LineTerminator} {}
 
 
 }
@@ -261,4 +261,4 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 /* Si el token contenido en la entrada no coincide con ninguna regla
     entonces se marca un token ilegal */
-[.]                    { throw new Error("Caracter ilegal <"+yytext()+">"); }
+.                    { AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token: ''"+yytext()+"'' , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");}
