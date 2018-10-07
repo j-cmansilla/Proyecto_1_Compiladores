@@ -1,16 +1,16 @@
- 
-   
+
+
 /* ---------------Seccion de declaraciones preliminares--------------------*/
 package analizadores;
 
 /* Import the class java_cup.runtime.*  */
 import java_cup.runtime.*;
 import java.io.FileReader;
-   
+
 /* Codigo del parser, se copia integramente a la clase final.
     Agregamos el manejo de errores. */
 parser code {:
-    
+
     /* Reporte de error encontrado. */
     private boolean error = false;
     public void report_error(String message, Object info) {
@@ -18,13 +18,13 @@ parser code {:
         if (info instanceof java_cup.runtime.Symbol) {
             java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
             m.append("Simbolo: '"+s.value.toString()+"' no esperado.");
-            if (s.left >= 0) {                
+            if (s.left >= 0) {
                 m.append(" en la línea "+(s.left+1));
                 if (s.right >= 0)
                     m.append(", columna "+(s.right+1));
             }
         }
-        
+
         m.append(" : "+message);
         AnalizadorSintacticoInterfaz.getAnalizador().setError(m.toString());
         AnalizadorSintacticoInterfaz.getAnalizador().error = true;
@@ -33,7 +33,7 @@ parser code {:
 
 
     }
-   
+
     /* Cuando se encuentra un error de donde el sistema no puede
         recuperarse, se lanza un error fatal. Se despliega el mensaje
         de error y se finaliza la ejecucion. */
@@ -42,7 +42,7 @@ parser code {:
         /*AnalizadorSintacticoInterfaz.getAnalizador().error = true;
         AnalizadorSintacticoInterfaz.getAnalizador().setError("> "+message);*/
         report_error(message, info);
-        
+
         //System.exit(1);
     }
 
@@ -56,12 +56,12 @@ parser code {:
                     new AnalizadorLexico( new FileReader(args[0])));
             Object result = asin.parse().value;
             if(!AnalizadorSintacticoInterfaz.getAnalizador().error){
-              AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");      
+              AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");
             }
-            
+
             System.out.println("\n*** Resultados finales ***");
         } catch (Exception ex) {
-           
+
         }
     }
 
@@ -74,40 +74,52 @@ parser code {:
             AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");
             System.out.println("\n*** Resultados finales ***");
         } catch (Exception ex) {
-            
+
         }
     }
 :};
-   
 
-   
+
+
 /* ------------Declaracion de simbolos terminales y no terminales---------- */
-   
+
 /* Terminales (tokens obtenidos por el analizador lexico). */
 
-terminal          OPERADORESA,HEXADECIMAL,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,TDS,CORCH,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
-                  SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,PARENTESIS,CORCH_A,CORCH_C,LL_A,LL_C,LLAVES,NEGACION,M_OC,LEER_EN,
-                  LEER_LIN,PUNTO,DECIMAL,ENTERO,TEXTO,NULO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL;
-   
+terminal          OPERADORESA,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,BOOLCONST,TDS,CORCH,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
+                  SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,PARENTESIS,CORCH_A,CORCH_C,LL_A,LL_C,NEGACION,M_OC,LEER_EN,
+                  LEER_LIN,PUNTO,DECIMAL,ENTERO,TEXTO,NULO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL,OPERADORESC,OPERADORESL;
+
 /* No terminales usados en la seccion gramatical. */
-non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,InterfaceDecl,Variable,Tipo,Formals,StmtBlock,ClassDecl,Field,
+non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,InterfaceDecl,Variable,Tipo,Formals,StmtBlock,ClassDecl,Field,
                         Herencias,Implementar,Prototype,Stmt,Expr,IfStmt,WhileStmt,ForStmt,BreakStmt,ReturnStmt,PrintStmt,RepetirField,
-                        VariableDeclRepetir,SmtmRepetir,ExprRepetir,ElseRepetir,LValue,Constant,Call,Actuals,LibCall,DeclRep,RepVariable,
-                        RepID,RepExpr,ReptPrototype;
+                        VariableDeclRepetir,SmtmRepetir,ExprRepetir,ElseRepetir,LValue,Constant,Call,Actuals,LibCall,DeclRep,
+                        ReptPrototype,VariableList,IDList,ExprList;
 
 
+precedence left IGUAL;
+precedence left OPERADORESA;
+precedence left OPERADORESC;
+precedence left OPERADORESL;
+precedence left NEGACION, MENOS;
+precedence left CORCH_A,PUNTO;
+precedence left PAR_A;
+precedence left SINO;
+precedence left IDENTIFICADOR;
 
-//GRAMATICA   
+
+start with Programa;
+//GRAMATICA
     Programa ::= Decl DeclRep
     ;
+
     Decl ::= VariableDecl|
              FunctionDecl|
-             CalssDecl|
+             ClassDecl|
              InterfaceDecl
     ;
     DeclRep ::= Decl DeclRep|
     ;
-    
+
     VariableDecl ::= Variable PUNTOYCOMA
     ;
     Variable ::= Tipo IDENTIFICADOR
@@ -121,29 +133,37 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
              Tipo CORCH
     ;
 
-    FunctionDecl ::= Tipo IDENTIFICADOR PAR_A Formals PAR_C StmtBlock
-    ;
-    Formals ::= Variable RepVariable COMA|
+    FunctionDecl ::= Tipo IDENTIFICADOR PAR_A Formals PAR_C StmtBlock| VD IDENTIFICADOR PAR_A Formals PAR_C StmtBlock
     ;
 
-    RepVariable ::= Variable RepVariable|
+    Formals ::= VariableList|
     ;
+
+
+    VariableList ::= Variable|VariableList COMA Variable
+    ;
+
+
 
     ClassDecl ::= CLASE IDENTIFICADOR Herencias Implementar LL_A RepetirField LL_C
     ;
+
     RepetirField ::= Field RepetirField|
     ;
-    Herencias ::= HERENCIA IDENTIFICADOR |
-    ;
-    Implementar ::= IMPLEMENTA IDENTIFICADOR RepID COMA |
+
+    Herencias ::= HERENCIA IDENTIFICADOR|
     ;
 
-    RepID ::= IDENTIFICADOR RepID|
+    Implementar ::= IMPLEMENTA IDList|
+    ;
+
+    IDList ::= IDENTIFICADOR| IDList COMA IDENTIFICADOR
     ;
 
     Field::= VariableDecl|
              FunctionDecl
     ;
+
     InterfaceDecl ::= INTERFAZ IDENTIFICADOR LL_A ReptPrototype LL_C
     ;
 
@@ -153,7 +173,9 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
     Prototype ::= Tipo IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA|
                   VD IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA
     ;
-    Stmt ::= ExprRepetir PUNTOYCOMA|
+
+    Stmt ::= Expr PUNTOYCOMA|
+                    PUNTOYCOMA|
                     IfStmt|
                     WhileStmt|
                     ForStmt|
@@ -162,7 +184,8 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
                     PrintStmt|
                     StmtBlock
     ;
-    ExprRepetir ::= Expr |
+
+    ExprRepetir ::= Expr|
     ;
     StmtBlock ::= LL_A VariableDeclRepetir SmtmRepetir LL_C
     ;
@@ -172,7 +195,7 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
     ;
     VariableDeclRepetir ::= VariableDecl VariableDeclRepetir|
     ;
-    SmtmRepetir ::= Stmt SmtmRepetir | 
+    SmtmRepetir ::= Stmt SmtmRepetir|
     ;
     WhileStmt ::= MIENTRAS PAR_A Expr PAR_C Stmt
     ;
@@ -182,10 +205,8 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
     ;
     BreakStmt ::= ROMPE PUNTOYCOMA
     ;
-    PrintStmt ::= IMPRIMIR PAR_A Expr RepExpr COMA PAR_C PUNTOYCOMA
+    PrintStmt ::= IMPRIMIR PAR_A ExprList PAR_C PUNTOYCOMA
     ;
-    
-    
 
     Expr ::= LValue IGUAL Expr|
              Constant|
@@ -194,6 +215,8 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
              Call|
              PAR_A Expr PAR_C|
              Expr OPERADORESA Expr|
+             Expr OPERADORESC Expr|
+             Expr OPERADORESL Expr|
              Expr MENOS Expr|
              Expr IGUAL Expr|
              MENOS Expr|
@@ -202,27 +225,32 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,CalssDecl,Inte
              NUEVO_A PAR_A Expr COMA Tipo PAR_C|
              LEER_EN PARENTESIS|
              LEER_LIN PARENTESIS|
-             M_OC PAR_A Expr PAR_C 
+             M_OC PAR_A Expr PAR_C
     ;
+
     LValue ::= IDENTIFICADOR|
                Expr PUNTO IDENTIFICADOR|
                Expr CORCH_A Expr CORCH_C
     ;
+
     Call ::= IDENTIFICADOR PAR_A Actuals PAR_C|
              Expr PUNTO IDENTIFICADOR PAR_A Actuals PAR_C|
              Expr PUNTO LibCall PAR_A Actuals PAR_C
     ;
+
     LibCall ::= OBTENER_BYTES PAR_A Expr PAR_C|
                 SET_BYTES PAR_A Expr COMA Expr PAR_C
     ;
-    Actuals ::= Expr RepExpr COMA|
+
+    Actuals ::= ExprList|
     ;
+
     Constant ::= ENTERO|
                  DECIMAL|
-                 TDB|
-                 TDS|
+                 BOOLCONST|
+                 TEXTO|
                  NULO
     ;
 
-    RepExpr ::= Expr RepExpr|
+    ExprList ::= Expr|ExprList COMA Expr
     ;
