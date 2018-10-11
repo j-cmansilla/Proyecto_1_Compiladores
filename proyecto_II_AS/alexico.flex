@@ -57,6 +57,7 @@ import java.io.Reader;
 WHITE=[ \t\r\n]
 L = [a-zA-Z_]
 D = [0-9]
+ComentarioError   = "/*" [^*]+
 OperadoresA = "+"|"*"|"/"|"%"
 OperadoresC = "<"|"<="|">"|">="|"=="|"!="
 OperadoresL = "&&"|"||"
@@ -66,6 +67,7 @@ Real = [0-9]+\.?[0-9]+([eE]{Entero}.?[0-9]*)?
 Hexadecimal = "0"("X"|"x")({D}|("A"|"B"|"C"|"D"|"E"|"F")|("a"|"b"|"c"|"d"|"e"|"f"))*
 Entero = [0-9]{D}*
 Textos = (\"([^\"\\\n]|\\.)*\")
+textoError = "\"" ~[\n]
 TipoDeDatoL = "true"|"false"
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
@@ -100,8 +102,9 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
       estados intermedios.*/
 
 <YYINITIAL> {
+    {ComentarioError} {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
     {Comment} {}
-
+    {textoError}   {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
 
     ";"     {   System.out.print(yytext());
                       return symbol(sym.PUNTOYCOMA, yytext()); }
@@ -255,4 +258,4 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 /* Si el token contenido en la entrada no coincide con ninguna regla
     entonces se marca un token ilegal */
-.                    { AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");}
+.                    { AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
