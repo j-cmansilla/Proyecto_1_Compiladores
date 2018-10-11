@@ -187,6 +187,7 @@ public class AnalizadorSintacticoInterfaz extends javax.swing.JFrame {
         
     private void seleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seleccionarArchivoActionPerformed
         // TODO add your handling code here:
+        
         txtSalida.setText("> Archivo: "+seleccionarArchivo.getSelectedFile().getAbsolutePath()+" seleccionado!"+System.getProperty("line.separator"));
         btnEjecutar.setEnabled(true);
     }//GEN-LAST:event_seleccionarArchivoActionPerformed

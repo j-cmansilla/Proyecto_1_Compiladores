@@ -38,22 +38,6 @@ parser code {:
         //System.out.println("UFA2");
     }
 
-    /* Cuando se encuentra un error de donde el sistema no puede
-        recuperarse, se lanza un error fatal. Se despliega el mensaje
-        de error y se finaliza la ejecucion.
-    public void report_fatal_error(String message, Object info) {
-        error = true;
-        /*AnalizadorSintacticoInterfaz.getAnalizador().error = true;
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("> "+message);
-        report_error(message, info);
-
-        //System.exit(1);
-    }*/
-
-    /* Metodo main para garantizar la ejecucion del analizador
-       lexico y sintactico, ademas que se pase como parametro la tabla
-       de simbolos correspondiente. */
-
     public void analizarSintacticamente(String[] args){
         try {
             AnalizadorSintactico asin = new AnalizadorSintactico(
@@ -89,8 +73,8 @@ parser code {:
 
 /* Terminales (tokens obtenidos por el analizador lexico). */
 
-terminal          OPERADORESA,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,BOOLCONST,TDS,CORCH,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
-                  SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,CORCH_A,CORCH_C,LL_A,LL_C,NEGACION,M_OC,LEER_EN,
+terminal          OPERADORESA,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,BOOLCONST,TDS,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
+                  SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,CORCH_A,CORCH,CORCH_C,LL_A,LL_C,NEGACION,M_OC,LEER_EN,
                   LEER_LIN,PUNTO,DECIMAL,ENTERO,TEXTO,NULO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL,OPERADORESC,OPERADORESL;
 
 /* No terminales usados en la seccion gramatical. */
@@ -101,14 +85,12 @@ non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,InterfaceDecl,
 
 
 precedence left IGUAL;
-precedence left OPERADORESA;
-precedence left OPERADORESC;
 precedence left OPERADORESL;
-precedence left NEGACION, MENOS;
+precedence nonassoc OPERADORESC;
+precedence left OPERADORESA,MENOS;
+precedence left NEGACION;
 precedence left CORCH_A,PUNTO;
-precedence left PAR_A;
-precedence left SINO;
-precedence left IDENTIFICADOR;
+precedence nonassoc SINO;
 
 
 start with Programa;
@@ -123,7 +105,7 @@ start with Programa;
              error PUNTOYCOMA|
              error LL_C
     ;
-    DeclRep ::= Decl DeclRep|
+    DeclRep ::= DeclRep Decl|
     ;
 
     VariableDecl ::= Variable PUNTOYCOMA
@@ -154,7 +136,7 @@ start with Programa;
     ClassDecl ::= CLASE IDENTIFICADOR Herencias Implementar LL_A RepetirField LL_C
     ;
 
-    RepetirField ::= Field RepetirField|
+    RepetirField ::= RepetirField Field|
     ;
 
     Herencias ::= HERENCIA IDENTIFICADOR|
@@ -173,7 +155,7 @@ start with Programa;
     InterfaceDecl ::= INTERFAZ IDENTIFICADOR LL_A ReptPrototype LL_C
     ;
 
-    ReptPrototype ::= Prototype ReptPrototype|
+    ReptPrototype ::= ReptPrototype Prototype|
     ;
 
     Prototype ::= Tipo IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA|
@@ -199,7 +181,7 @@ start with Programa;
     ;
     ElseRepetir ::= SINO Stmt|
     ;
-    VariableDeclRepetir ::= VariableDecl VariableDeclRepetir|
+    VariableDeclRepetir ::= VariableDeclRepetir VariableDecl|
     ;
     SmtmRepetir ::= Stmt SmtmRepetir|
     ;

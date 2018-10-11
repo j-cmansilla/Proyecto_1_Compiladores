@@ -9,9 +9,6 @@ import java.io.Reader;
 
 /* ------ Seccion de opciones y declaraciones de JFlex -------------- */
 
-/*
-    Cambiamos el nombre de la clase del analizador a Lexer
-*/
 %class AnalizadorLexico
 
 /*
@@ -109,7 +106,7 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
     ";"     {   System.out.print(yytext());
                       return symbol(sym.PUNTOYCOMA, yytext()); }
 
-    "[]"     {   System.out.print(yytext());
+    "[]"   {   System.out.print(yytext());
                 return symbol(sym.CORCH, yytext()); }
 
     "void"   {   System.out.print(yytext());
