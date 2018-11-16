@@ -112,45 +112,39 @@ start with Programa;
     VariableDecl ::= Variable PUNTOYCOMA
     ;
     Variable ::= Tipo:tipo IDENTIFICADOR:id{:
-        String key = id.toString()+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
-        AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-        //JOptionPane.showMessageDialog(null, TablaDeSimbolos.getTabla().getArchivoActual());
-        Value valor = new Value(id.toString(), tipo.toString(),TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), "variable", true,TablaDeSimbolos.getTabla().getFuncionActual());
-        if(TablaDeSimbolos.getTabla().isEmpty()){
-            TablaDeSimbolos.getTabla().put(key,valor);
-            //prueba
-            TablaDeSimbolos.getTabla().imprimirTabla(valor);
-        }else{
-            if (!TablaDeSimbolos.getTabla().contains(key)){
-                TablaDeSimbolos.getTabla().put(key,valor);
-                TablaDeSimbolos.getTabla().imprimirTabla(valor);
-                //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-            }else{
-                AnalizadorSintacticoInterfaz.getAnalizador().setError("Error semantico, identificador "+id.toString()+" ya fue declarado!");
-                AnalizadorSintacticoInterfaz.getAnalizador().error = true;
-            }
-        }
+        TablaDeSimbolos.getTabla().insertarEnTabla(id.toString(),tipo.toString(),"variable");
+    :}|CONSTANTE Tipo:tipo IDENTIFICADOR:id{:
+        TablaDeSimbolos.getTabla().insertarEnTabla(id.toString(),tipo.toString(),"constante");
     :}
     ;
 
     Tipo ::= TDE{: RESULT = "int"; :}|
              TDD{: RESULT = "double"; :}|
-             TDB{: RESULT = "boolean"; :}|
+             TDB{: RESULT = "bool"; :}|
              TDS{: RESULT = "cadena"; :}|
              IDENTIFICADOR:id{: RESULT = id.toString(); :}|
              Tipo CORCH
     ;
 
     FunctionDecl ::= Tipo:tipo IDENTIFICADOR:funcion{:
-        TablaDeSimbolos.getTabla().aumentarAmbito();
-        TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+        if (TablaDeSimbolos.getTabla().insertarEnTabla(funcion.toString(),tipo.toString(),"funcion")) {
+          TablaDeSimbolos.getTabla().aumentarAmbito();
+          TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+        }
     :} PAR_A Formals:valor PAR_C StmtBlock:value{:
      TablaDeSimbolos.getTabla().removerTemporales();
      TablaDeSimbolos.getTabla().reducirAmbito();
      TablaDeSimbolos.getTabla().setFuncionActual("");
     :}
-    | VD IDENTIFICADOR:funcion PAR_A Formals:valor PAR_C StmtBlock:value{:
-
+    | VD IDENTIFICADOR:funcion{:
+      if (TablaDeSimbolos.getTabla().insertarEnTabla(funcion.toString(),"void","funcion")) {
+        TablaDeSimbolos.getTabla().aumentarAmbito();
+        TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+      }
+      :} PAR_A Formals:valor PAR_C StmtBlock:value{:
+        TablaDeSimbolos.getTabla().removerTemporales();
+        TablaDeSimbolos.getTabla().reducirAmbito();
+        TablaDeSimbolos.getTabla().setFuncionActual("");
     :}
     ;
 
@@ -164,8 +158,10 @@ start with Programa;
 
 
     ClassDecl ::= CLASE IDENTIFICADOR:clase{:
+      if (TablaDeSimbolos.getTabla().insertarEnTabla(clase.toString(),"","clase")) {
         TablaDeSimbolos.getTabla().aumentarAmbito();
         TablaDeSimbolos.getTabla().setClaseActual(clase.toString());
+      }
     :} Herencias Implementar LL_A RepetirField:valor LL_C{:
         TablaDeSimbolos.getTabla().removerTemporales();
         TablaDeSimbolos.getTabla().reducirAmbito();

@@ -94,7 +94,7 @@ public class TablaDeSimbolos {
  
     private final Hashtable<String, Value> st;  
     
-    private final ArrayList<String> tablaSimbolos;
+    private ArrayList<String> tablaSimbolos;
     
     public  static TablaDeSimbolos getTabla() {
         
@@ -109,6 +109,39 @@ public class TablaDeSimbolos {
     private String ArchivoActual; 
     private String ClaseActual; 
     private String FuncionActual;
+    
+    public boolean insertarEnTabla(String id, String tipoDeDato, String tipo){
+        String key = id+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
+        String value = "";
+        if (tipoDeDato.equals("int")) {
+          value = "0";
+        }
+        if (tipoDeDato.equals("double")) {
+          value = "0.00";
+        }
+        if (tipoDeDato.equals("bool")) {
+          value = "true";
+        }
+        if (tipoDeDato.equals("string")) {
+          value = "";
+        }
+        Value valor = new Value(id, tipoDeDato,TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), tipo, true,TablaDeSimbolos.getTabla().getFuncionActual(),value);
+        if(TablaDeSimbolos.getTabla().isEmpty()){
+            TablaDeSimbolos.getTabla().put(key,valor);
+            TablaDeSimbolos.getTabla().imprimirTabla(valor);
+            return true;
+        }else{
+            if (!TablaDeSimbolos.getTabla().contains(key)){
+                TablaDeSimbolos.getTabla().put(key,valor);
+                TablaDeSimbolos.getTabla().imprimirTabla(valor);
+                return true;
+            }else{
+                AnalizadorSintacticoInterfaz.getAnalizador().setError("Error semantico, identificador "+id.toString()+" ya fue declarado!");
+                AnalizadorSintacticoInterfaz.getAnalizador().error = true;
+            }
+        }
+        return false;
+    }
     
     public void aumentarAmbito(){
         AmbitoActual = AmbitoActual +1;
@@ -133,11 +166,18 @@ public class TablaDeSimbolos {
     
     public void removerTemporales(){
         int tamanio = tablaSimbolos.size();
+        ArrayList<String> elementosAEliminar = new ArrayList();
+        
         for (int i = 0; i < tamanio; i++) {
             if (get(tablaSimbolos.get(i)).getAmbito() == getAmbitoActual()) {
-               delete(tablaSimbolos.get(i));
-                tablaSimbolos.remove(i); 
+               elementosAEliminar.add(tablaSimbolos.get(i));
+               st.remove(tablaSimbolos.get(i));
             } 
+        }
+        for (int i = 0; i < elementosAEliminar.size(); i++) {
+            if (tablaSimbolos.contains(elementosAEliminar.get(i))) {
+                tablaSimbolos.remove(elementosAEliminar.get(i));
+            }
         }
     }
     
@@ -145,10 +185,12 @@ public class TablaDeSimbolos {
         AnalizadorSintacticoInterfaz.getAnalizador().setError("");
         AnalizadorSintacticoInterfaz.getAnalizador().setError("####################################");
         AnalizadorSintacticoInterfaz.getAnalizador().setError("Nombre: "+value.getNombre());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Tipo: "+value.getTipo());
+        AnalizadorSintacticoInterfaz.getAnalizador().setError("Tipo de dato: "+value.getTipo());
         AnalizadorSintacticoInterfaz.getAnalizador().setError("Clase: "+value.getClase());
         AnalizadorSintacticoInterfaz.getAnalizador().setError("Funcion: "+value.getFuncion());
         AnalizadorSintacticoInterfaz.getAnalizador().setError("Archivo:"+value.getArchivo());
+        AnalizadorSintacticoInterfaz.getAnalizador().setError("Tipo: "+value.getTipoDato());
+        AnalizadorSintacticoInterfaz.getAnalizador().setError("Valor: "+value.getValor());
         AnalizadorSintacticoInterfaz.getAnalizador().setError("####################################");
         AnalizadorSintacticoInterfaz.getAnalizador().setError("");
     }

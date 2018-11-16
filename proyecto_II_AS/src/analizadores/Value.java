@@ -12,6 +12,20 @@ package analizadores;
 public class Value {
 
     /**
+     * @return the Valor
+     */
+    public String getValor() {
+        return Valor;
+    }
+
+    /**
+     * @param Valor the Valor to set
+     */
+    public void setValor(String Valor) {
+        this.Valor = Valor;
+    }
+
+    /**
      * @return the Nombre
      */
     public String getNombre() {
@@ -126,7 +140,7 @@ public class Value {
     /**
      * @return the Nombre
      */
-    public Value(String Nombre, String Tipo, int Ambito, String Archivo, String Clase, String TipoDato, boolean EsParametro, String Funcion) {    
+    public Value(String Nombre, String Tipo, int Ambito, String Archivo, String Clase, String TipoDato, boolean EsParametro, String Funcion,String Valor) {    
         this.Nombre = Nombre;
         this.Tipo = Tipo;
         this.Ambito = Ambito;
@@ -135,6 +149,7 @@ public class Value {
         this.TipoDato = TipoDato;
         this.EsParametro = EsParametro;
         this.Funcion = Funcion;
+        this.Valor = Valor;
     }
     
     private String Nombre;
@@ -145,4 +160,5 @@ public class Value {
     private String TipoDato;
     private boolean EsParametro; 
     private String Funcion;
+    private String Valor;
 }

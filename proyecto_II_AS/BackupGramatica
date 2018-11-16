@@ -1,0 +1,318 @@
+
+
+/* ---------------Seccion de declaraciones preliminares--------------------*/
+package analizadores;
+
+/* Import the class java_cup.runtime.*  */
+import java_cup.runtime.*;
+import java.io.FileReader;
+import javax.swing.JOptionPane;
+
+
+/* Codigo del parser, se copia integramente a la clase final.
+    Agregamos el manejo de errores. */
+parser code {:
+
+    /* Reporte de error encontrado. */
+    private boolean error = false;
+    public void report_error(String message, Object info) {
+        StringBuilder m = new StringBuilder("Error");
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            m.append(" Sintactico, simbolo   "+s.value.toString()+"   no esperado.");
+            if (s.left >= 0) {
+                m.append(" en la línea "+(s.left+1));
+                if (s.right >= 0)
+                    m.append(", columna "+(s.right+1));
+            }
+        }
+
+        m.append(" : "+message);
+        AnalizadorSintacticoInterfaz.getAnalizador().setError(m.toString());
+        AnalizadorSintacticoInterfaz.getAnalizador().error = true;
+        System.err.println(m);
+        error = true;
+
+
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        //System.out.println("UFA2");
+    }
+
+    public void analizarSintacticamente(String[] args){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(args[0])));
+            Object result = asin.parse().value;
+            if(!AnalizadorSintacticoInterfaz.getAnalizador().error){
+              AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");
+            }
+
+            System.out.println("\n*** Resultados finales ***");
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public static void main(String[] args){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(args[0])));
+
+            Object result = asin.parse().value;
+            AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");
+            System.out.println("\n*** Resultados finales ***");
+        } catch (Exception ex) {
+
+        }
+    }
+:};
+
+
+/* ------------Declaracion de simbolos terminales y no terminales---------- */
+
+/* Terminales (tokens obtenidos por el analizador lexico). */
+
+terminal  Object  OPERADORESA,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,BOOLCONST,TDS,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
+                  SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,CORCH_A,CORCH,CORCH_C,LL_A,LL_C,NEGACION,M_OC,LEER_EN,
+                  LEER_LIN,PUNTO,DECIMAL,ENTERO,TEXTO,NULO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL,OPERADORESC,OPERADORESL,CONSTANTE;
+
+/* No terminales usados en la seccion gramatical. */
+non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,InterfaceDecl,Variable,Tipo,Formals,StmtBlock,ClassDecl,Field,
+                        Herencias,Implementar,Prototype,Stmt,Expr,IfStmt,WhileStmt,ForStmt,BreakStmt,ReturnStmt,PrintStmt,RepetirField,
+                        VariableDeclRepetir,SmtmRepetir,ExprRepetir,ElseRepetir,LValue,Constant,Call,Actuals,LibCall,DeclRep,
+                        ReptPrototype,VariableList,IDList,ExprList,ConstantDecl,ValorConstante;
+
+
+precedence left IGUAL;
+precedence left OPERADORESL;
+precedence nonassoc OPERADORESC;
+precedence left OPERADORESA,MENOS;
+precedence left NEGACION;
+precedence left CORCH_A,PUNTO;
+precedence nonassoc SINO;
+
+
+start with Programa;
+//GRAMATICA
+    Programa ::= Decl DeclRep
+    ;
+
+    Decl ::= VariableDecl|
+             FunctionDecl|
+             ClassDecl|
+             InterfaceDecl|
+             error PUNTOYCOMA|
+             ConstantDecl|
+             error LL_C
+    ;
+    DeclRep ::= DeclRep Decl|
+    ;
+
+    ConstantDecl ::= ValorConstante PUNTOYCOMA
+    ;
+
+    ValorConstante ::= CONSTANTE Tipo:tipo IDENTIFICADOR:id{:
+      String key = id.toString()+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
+      //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+      //JOptionPane.showMessageDialog(null, TablaDeSimbolos.getTabla().getArchivoActual());
+      Value valor = new Value(id.toString(), tipo.toString(),TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), "constante", true,TablaDeSimbolos.getTabla().getFuncionActual());
+      if(TablaDeSimbolos.getTabla().isEmpty()){
+          TablaDeSimbolos.getTabla().put(key,valor);
+          //prueba
+          TablaDeSimbolos.getTabla().imprimirTabla(valor);
+          //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+      }else{
+          if (!TablaDeSimbolos.getTabla().contains(key)){
+              TablaDeSimbolos.getTabla().put(key,valor);
+              TablaDeSimbolos.getTabla().imprimirTabla(valor);
+              //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+              //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+          }else{
+              AnalizadorSintacticoInterfaz.getAnalizador().setError("******* Error semantico, identificador "+id.toString()+" ya fue declarado!");
+              AnalizadorSintacticoInterfaz.getAnalizador().error = true;
+          }
+      }
+      :}
+    ;
+
+    VariableDecl ::= Variable PUNTOYCOMA
+    ;
+    Variable ::= Tipo:tipo IDENTIFICADOR:id{:
+        String key = id.toString()+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
+        //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+        //JOptionPane.showMessageDialog(null, TablaDeSimbolos.getTabla().getArchivoActual());
+        Value valor = new Value(id.toString(), tipo.toString(),TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), "variable", true,TablaDeSimbolos.getTabla().getFuncionActual());
+        if(TablaDeSimbolos.getTabla().isEmpty()){
+            TablaDeSimbolos.getTabla().put(key,valor);
+            //prueba
+            TablaDeSimbolos.getTabla().imprimirTabla(valor);
+            //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+        }else{
+            if (!TablaDeSimbolos.getTabla().contains(key)){
+                TablaDeSimbolos.getTabla().put(key,valor);
+                TablaDeSimbolos.getTabla().imprimirTabla(valor);
+                //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+                //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
+            }else{
+                AnalizadorSintacticoInterfaz.getAnalizador().setError("******* Error semantico, identificador "+id.toString()+" ya fue declarado!");
+                AnalizadorSintacticoInterfaz.getAnalizador().error = true;
+            }
+        }
+    :}
+    ;
+
+    Tipo ::= TDE{: RESULT = "int"; :}|
+             TDD{: RESULT = "double"; :}|
+             TDB{: RESULT = "boolean"; :}|
+             TDS{: RESULT = "cadena"; :}|
+             IDENTIFICADOR:id{: RESULT = id.toString(); :}|
+             Tipo CORCH
+    ;
+
+    FunctionDecl ::= Tipo:tipo IDENTIFICADOR:funcion{:
+        TablaDeSimbolos.getTabla().aumentarAmbito();
+        TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+    :} PAR_A Formals:valor PAR_C StmtBlock:value{:
+     TablaDeSimbolos.getTabla().removerTemporales();
+     TablaDeSimbolos.getTabla().reducirAmbito();
+     TablaDeSimbolos.getTabla().setFuncionActual("");
+    :}
+    | VD IDENTIFICADOR:funcion{:
+      TablaDeSimbolos.getTabla().aumentarAmbito();
+      TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+      :} PAR_A Formals:valor PAR_C StmtBlock:value{:
+        TablaDeSimbolos.getTabla().removerTemporales();
+        TablaDeSimbolos.getTabla().reducirAmbito();
+        TablaDeSimbolos.getTabla().setFuncionActual("");
+    :}
+    ;
+
+    Formals ::= VariableList|
+    ;
+
+
+    VariableList ::= Variable|VariableList COMA Variable
+    ;
+
+
+
+    ClassDecl ::= CLASE IDENTIFICADOR:clase{:
+        TablaDeSimbolos.getTabla().aumentarAmbito();
+        TablaDeSimbolos.getTabla().setClaseActual(clase.toString());
+    :} Herencias Implementar LL_A RepetirField:valor LL_C{:
+        TablaDeSimbolos.getTabla().removerTemporales();
+        TablaDeSimbolos.getTabla().reducirAmbito();
+        TablaDeSimbolos.getTabla().setClaseActual("");
+    :}
+    ;
+
+    RepetirField ::= RepetirField Field|
+    ;
+
+    Herencias ::= HERENCIA IDENTIFICADOR|
+    ;
+
+    Implementar ::= IMPLEMENTA IDList|
+    ;
+
+    IDList ::= IDENTIFICADOR| IDList COMA IDENTIFICADOR
+    ;
+
+    Field::= VariableDecl|
+             FunctionDecl
+    ;
+
+    InterfaceDecl ::= INTERFAZ IDENTIFICADOR LL_A ReptPrototype LL_C
+    ;
+
+    ReptPrototype ::= ReptPrototype Prototype|
+    ;
+
+    Prototype ::= Tipo IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA|
+                  VD IDENTIFICADOR PAR_A Formals PAR_C PUNTOYCOMA
+    ;
+
+    Stmt ::= Expr PUNTOYCOMA|
+                    PUNTOYCOMA|
+                    IfStmt|
+                    WhileStmt|
+                    ForStmt|
+                    BreakStmt|
+                    ReturnStmt|
+                    PrintStmt|
+                    StmtBlock
+    ;
+
+    ExprRepetir ::= Expr|
+    ;
+    StmtBlock ::= LL_A VariableDeclRepetir SmtmRepetir LL_C
+    ;
+    IfStmt ::= SI PAR_A Expr PAR_C Stmt ElseRepetir
+    ;
+
+    ElseRepetir ::= SINO Stmt|
+    ;
+
+    VariableDeclRepetir ::= VariableDeclRepetir VariableDecl
+    ;
+    SmtmRepetir ::= Stmt SmtmRepetir|
+    ;
+    WhileStmt ::= MIENTRAS PAR_A Expr PAR_C Stmt
+    ;
+    ForStmt ::= PARA PAR_A ExprRepetir PUNTOYCOMA Expr PUNTOYCOMA ExprRepetir PAR_C Stmt
+    ;
+    ReturnStmt ::= RETORNA ExprRepetir PUNTOYCOMA
+    ;
+    BreakStmt ::= ROMPE PUNTOYCOMA
+    ;
+    PrintStmt ::= IMPRIMIR PAR_A ExprList PAR_C PUNTOYCOMA
+    ;
+
+    Expr ::= LValue IGUAL Expr|
+             Constant|
+             LValue|
+             ESTO|
+             Call|
+             PAR_A Expr PAR_C|
+             Expr OPERADORESA Expr|
+             Expr OPERADORESC Expr|
+             Expr OPERADORESL Expr|
+             Expr MENOS Expr|
+             Expr IGUAL Expr|
+             MENOS Expr|
+             NEGACION Expr|
+             NUEVO PAR_A IDENTIFICADOR PAR_C|
+             NUEVO_A PAR_A Expr COMA Tipo PAR_C|
+             LEER_EN PAR_A PAR_C|
+             LEER_LIN PAR_A PAR_C|
+             M_OC PAR_A Expr PAR_C
+    ;
+
+    LValue ::= IDENTIFICADOR|
+               Expr PUNTO IDENTIFICADOR|
+               Expr CORCH_A Expr CORCH_C
+    ;
+
+    Call ::= IDENTIFICADOR PAR_A Actuals PAR_C|
+             Expr PUNTO IDENTIFICADOR PAR_A Actuals PAR_C|
+             Expr PUNTO LibCall PAR_A Actuals PAR_C
+    ;
+
+    LibCall ::= OBTENER_BYTES PAR_A Expr PAR_C|
+                SET_BYTES PAR_A Expr COMA Expr PAR_C
+    ;
+
+    Actuals ::= ExprList|
+    ;
+
+    Constant ::= ENTERO|
+                 DECIMAL|
+                 BOOLCONST|
+                 TEXTO|
+                 NULO
+    ;
+
+    ExprList ::= Expr|ExprList COMA Expr
+    ;
