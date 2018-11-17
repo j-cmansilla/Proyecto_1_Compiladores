@@ -185,7 +185,16 @@ start with Programa;
              FunctionDecl
     ;
 
-    InterfaceDecl ::= INTERFAZ IDENTIFICADOR LL_A ReptPrototype LL_C
+    InterfaceDecl ::= INTERFAZ IDENTIFICADOR:interfaz{:
+      if (TablaDeSimbolos.getTabla().insertarEnTabla(interfaz.toString(),"","interfaz")) {
+        TablaDeSimbolos.getTabla().aumentarAmbito();
+        TablaDeSimbolos.getTabla().setClaseActual(interfaz.toString());
+      }
+      :} LL_A ReptPrototype LL_C{:
+        TablaDeSimbolos.getTabla().removerTemporales();
+        TablaDeSimbolos.getTabla().reducirAmbito();
+        TablaDeSimbolos.getTabla().setClaseActual("");
+      :}
     ;
 
     ReptPrototype ::= ReptPrototype Prototype|
@@ -229,17 +238,17 @@ start with Programa;
     PrintStmt ::= IMPRIMIR PAR_A ExprList PAR_C PUNTOYCOMA
     ;
 
-    Expr ::= LValue IGUAL Expr|
-             Constant|
+    Expr ::= LValue:valor IGUAL Expr:e{:TablaDeSimbolos.getTabla().asignarValor(valor.toString()+","+e.toString());:}|
+             Constant:valor{:RESULT=valor.toString();:}|
              LValue|
              ESTO|
              Call|
              PAR_A Expr PAR_C|
-             Expr OPERADORESA Expr|
-             Expr OPERADORESC Expr|
-             Expr OPERADORESL Expr|
-             Expr MENOS Expr|
-             Expr IGUAL Expr|
+             Expr:e1 OPERADORESA:operador Expr:e2{:RESULT = e1.toString()+","+operador.toString()+","+e2.toString();:}|
+             Expr:e1 OPERADORESC:operador Expr:e2{:RESULT = e1.toString()+","+operador.toString()+","+e2.toString();:}|
+             Expr:e1 OPERADORESL:operador Expr:e2{:RESULT = e1.toString()+","+operador.toString()+","+e2.toString();:}|
+             Expr:e1 MENOS Expr:e2{:RESULT = e1.toString()+","+"-"+","+e2.toString();:}|
+             Expr:e1 IGUAL Expr:e2{:RESULT = e1.toString()+","+"="+","+e2.toString();:}|
              MENOS Expr|
              NEGACION Expr|
              NUEVO PAR_A IDENTIFICADOR PAR_C|
@@ -249,7 +258,7 @@ start with Programa;
              M_OC PAR_A Expr PAR_C
     ;
 
-    LValue ::= IDENTIFICADOR|
+    LValue ::= IDENTIFICADOR:id{:RESULT = id.toString();:}|
                Expr PUNTO IDENTIFICADOR|
                Expr CORCH_A Expr CORCH_C
     ;
@@ -266,9 +275,9 @@ start with Programa;
     Actuals ::= ExprList|
     ;
 
-    Constant ::= ENTERO|
-                 DECIMAL|
-                 BOOLCONST|
+    Constant ::= ENTERO:entero{:RESULT = entero;:}|
+                 DECIMAL:decimal{:RESULT= decimal;:}|
+                 BOOLCONST:bo{:RESULT = bo;:}|
                  TEXTO|
                  NULO
     ;

@@ -109,7 +109,7 @@ public class TablaDeSimbolos {
     private String ArchivoActual; 
     private String ClaseActual; 
     private String FuncionActual;
-    
+    private ArrayList<String> TablaSalida;
     public boolean insertarEnTabla(String id, String tipoDeDato, String tipo){
         String key = id+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
         String value = "";
@@ -153,6 +153,7 @@ public class TablaDeSimbolos {
     public TablaDeSimbolos  () {
         st = new Hashtable<>();
         tablaSimbolos = new ArrayList<>();
+        TablaSalida = new ArrayList<>();
     }
     
     public Value get(String key) {
@@ -181,18 +182,26 @@ public class TablaDeSimbolos {
         }
     }
     
+    public boolean asignarValor(String valor){
+        if (valor.equals("")) {
+            
+        }
+        return false;
+    }
+    
     public void imprimirTabla(Value value){
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("");
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("####################################");
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Nombre: "+value.getNombre());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Tipo de dato: "+value.getTipo());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Clase: "+value.getClase());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Funcion: "+value.getFuncion());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Archivo:"+value.getArchivo());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Tipo: "+value.getTipoDato());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("Valor: "+value.getValor());
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("####################################");
-        AnalizadorSintacticoInterfaz.getAnalizador().setError("");
+        String salida = "                 "+value.getTipoDato().toUpperCase();
+        salida = salida + (System.getProperty("line.separator")+"*************************************"+System.getProperty("line.separator"));
+        salida = salida +"#     IDENTIFICADOR: "+value.getNombre()+System.getProperty("line.separator");
+        salida = salida +"#     TIPO DE DATO: "+value.getTipo()+System.getProperty("line.separator");
+        salida = salida+"#      CLASE: "+value.getClase()+System.getProperty("line.separator");
+        salida = salida+"#      FUNCION: "+value.getFuncion()+System.getProperty("line.separator");
+        salida = salida+"#      ARCHIVO:"+value.getArchivo()+System.getProperty("line.separator");
+        salida = salida+"#      TIPO: "+value.getTipoDato()+System.getProperty("line.separator");
+        salida = salida+"#      VALOR: "+value.getValor()+System.getProperty("line.separator");
+        salida = salida+"*************************************"+System.getProperty("line.separator");
+        AnalizadorSintacticoInterfaz.getAnalizador().setError(salida);
+        TablaSalida.add(salida);
     }
     
     public void put(String key, Value val) {

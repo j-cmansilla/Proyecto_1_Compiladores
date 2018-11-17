@@ -20,7 +20,7 @@ public class Principal {
     public final static int GENERAR = 1;
     public final static int EJECUTAR = 2;
     public final static int SALIR = 3;
-
+    
     /**
      * Es un menu para elegir entre generar el analizador lexico y sintactico, o
      * ejecutarlos sobre un archivo de pruebas.
@@ -57,6 +57,7 @@ public class Principal {
         AnalizadorSintactico analizador = new AnalizadorSintactico();
         analizador.analizarSintacticamente(archivoPrueba);
         System.out.println("Ejecutado!");
+        
         return "El archivo analizado no contiene errores!";
     }
     

@@ -82,7 +82,7 @@ terminal  Object  OPERADORESA,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,BOOLCONST,TDS
 non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,InterfaceDecl,Variable,Tipo,Formals,StmtBlock,ClassDecl,Field,
                         Herencias,Implementar,Prototype,Stmt,Expr,IfStmt,WhileStmt,ForStmt,BreakStmt,ReturnStmt,PrintStmt,RepetirField,
                         VariableDeclRepetir,SmtmRepetir,ExprRepetir,ElseRepetir,LValue,Constant,Call,Actuals,LibCall,DeclRep,
-                        ReptPrototype,VariableList,IDList,ExprList,ConstantDecl,ValorConstante;
+                        ReptPrototype,VariableList,IDList,ExprList;
 
 
 precedence left IGUAL;
@@ -104,84 +104,43 @@ start with Programa;
              ClassDecl|
              InterfaceDecl|
              error PUNTOYCOMA|
-             ConstantDecl|
              error LL_C
     ;
     DeclRep ::= DeclRep Decl|
     ;
 
-    ConstantDecl ::= ValorConstante PUNTOYCOMA
-    ;
-
-    ValorConstante ::= CONSTANTE Tipo:tipo IDENTIFICADOR:id{:
-      String key = id.toString()+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
-      //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-      //JOptionPane.showMessageDialog(null, TablaDeSimbolos.getTabla().getArchivoActual());
-      Value valor = new Value(id.toString(), tipo.toString(),TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), "constante", true,TablaDeSimbolos.getTabla().getFuncionActual());
-      if(TablaDeSimbolos.getTabla().isEmpty()){
-          TablaDeSimbolos.getTabla().put(key,valor);
-          //prueba
-          TablaDeSimbolos.getTabla().imprimirTabla(valor);
-          //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-      }else{
-          if (!TablaDeSimbolos.getTabla().contains(key)){
-              TablaDeSimbolos.getTabla().put(key,valor);
-              TablaDeSimbolos.getTabla().imprimirTabla(valor);
-              //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-              //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-          }else{
-              AnalizadorSintacticoInterfaz.getAnalizador().setError("******* Error semantico, identificador "+id.toString()+" ya fue declarado!");
-              AnalizadorSintacticoInterfaz.getAnalizador().error = true;
-          }
-      }
-      :}
-    ;
-
     VariableDecl ::= Variable PUNTOYCOMA
     ;
     Variable ::= Tipo:tipo IDENTIFICADOR:id{:
-        String key = id.toString()+TablaDeSimbolos.getTabla().getArchivoActual()+TablaDeSimbolos.getTabla().getAmbitoActual();
-        //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-        //JOptionPane.showMessageDialog(null, TablaDeSimbolos.getTabla().getArchivoActual());
-        Value valor = new Value(id.toString(), tipo.toString(),TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), "variable", true,TablaDeSimbolos.getTabla().getFuncionActual());
-        if(TablaDeSimbolos.getTabla().isEmpty()){
-            TablaDeSimbolos.getTabla().put(key,valor);
-            //prueba
-            TablaDeSimbolos.getTabla().imprimirTabla(valor);
-            //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-        }else{
-            if (!TablaDeSimbolos.getTabla().contains(key)){
-                TablaDeSimbolos.getTabla().put(key,valor);
-                TablaDeSimbolos.getTabla().imprimirTabla(valor);
-                //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-                //AnalizadorSintacticoInterfaz.getAnalizador().setError(key+" fue declarado!");
-            }else{
-                AnalizadorSintacticoInterfaz.getAnalizador().setError("******* Error semantico, identificador "+id.toString()+" ya fue declarado!");
-                AnalizadorSintacticoInterfaz.getAnalizador().error = true;
-            }
-        }
+        TablaDeSimbolos.getTabla().insertarEnTabla(id.toString(),tipo.toString(),"variable");
+    :}|CONSTANTE Tipo:tipo IDENTIFICADOR:id{:
+        TablaDeSimbolos.getTabla().insertarEnTabla(id.toString(),tipo.toString(),"constante");
     :}
     ;
 
     Tipo ::= TDE{: RESULT = "int"; :}|
              TDD{: RESULT = "double"; :}|
-             TDB{: RESULT = "boolean"; :}|
+             TDB{: RESULT = "bool"; :}|
              TDS{: RESULT = "cadena"; :}|
              IDENTIFICADOR:id{: RESULT = id.toString(); :}|
              Tipo CORCH
     ;
 
     FunctionDecl ::= Tipo:tipo IDENTIFICADOR:funcion{:
-        TablaDeSimbolos.getTabla().aumentarAmbito();
-        TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+        if (TablaDeSimbolos.getTabla().insertarEnTabla(funcion.toString(),tipo.toString(),"funcion")) {
+          TablaDeSimbolos.getTabla().aumentarAmbito();
+          TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+        }
     :} PAR_A Formals:valor PAR_C StmtBlock:value{:
      TablaDeSimbolos.getTabla().removerTemporales();
      TablaDeSimbolos.getTabla().reducirAmbito();
      TablaDeSimbolos.getTabla().setFuncionActual("");
     :}
     | VD IDENTIFICADOR:funcion{:
-      TablaDeSimbolos.getTabla().aumentarAmbito();
-      TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+      if (TablaDeSimbolos.getTabla().insertarEnTabla(funcion.toString(),"void","funcion")) {
+        TablaDeSimbolos.getTabla().aumentarAmbito();
+        TablaDeSimbolos.getTabla().setFuncionActual(funcion.toString());
+      }
       :} PAR_A Formals:valor PAR_C StmtBlock:value{:
         TablaDeSimbolos.getTabla().removerTemporales();
         TablaDeSimbolos.getTabla().reducirAmbito();
@@ -199,8 +158,10 @@ start with Programa;
 
 
     ClassDecl ::= CLASE IDENTIFICADOR:clase{:
+      if (TablaDeSimbolos.getTabla().insertarEnTabla(clase.toString(),"","clase")) {
         TablaDeSimbolos.getTabla().aumentarAmbito();
         TablaDeSimbolos.getTabla().setClaseActual(clase.toString());
+      }
     :} Herencias Implementar LL_A RepetirField:valor LL_C{:
         TablaDeSimbolos.getTabla().removerTemporales();
         TablaDeSimbolos.getTabla().reducirAmbito();
@@ -224,7 +185,16 @@ start with Programa;
              FunctionDecl
     ;
 
-    InterfaceDecl ::= INTERFAZ IDENTIFICADOR LL_A ReptPrototype LL_C
+    InterfaceDecl ::= INTERFAZ IDENTIFICADOR:interfaz{:
+      if (TablaDeSimbolos.getTabla().insertarEnTabla(interfaz.toString(),"","interfaz")) {
+        TablaDeSimbolos.getTabla().aumentarAmbito();
+        TablaDeSimbolos.getTabla().setClaseActual(interfaz.toString());
+      }
+      :} LL_A ReptPrototype LL_C{:
+        TablaDeSimbolos.getTabla().removerTemporales();
+        TablaDeSimbolos.getTabla().reducirAmbito();
+        TablaDeSimbolos.getTabla().setClaseActual("");
+      :}
     ;
 
     ReptPrototype ::= ReptPrototype Prototype|
@@ -251,11 +221,9 @@ start with Programa;
     ;
     IfStmt ::= SI PAR_A Expr PAR_C Stmt ElseRepetir
     ;
-
     ElseRepetir ::= SINO Stmt|
     ;
-
-    VariableDeclRepetir ::= VariableDeclRepetir VariableDecl
+    VariableDeclRepetir ::= VariableDeclRepetir VariableDecl|
     ;
     SmtmRepetir ::= Stmt SmtmRepetir|
     ;
@@ -270,17 +238,18 @@ start with Programa;
     PrintStmt ::= IMPRIMIR PAR_A ExprList PAR_C PUNTOYCOMA
     ;
 
-    Expr ::= LValue IGUAL Expr|
+    Expr ::= LValue:valor IGUAL Expr:e{:System.out.println(valor.toString());
+                                        System.out.println(e.toString());:}|
              Constant|
              LValue|
              ESTO|
              Call|
              PAR_A Expr PAR_C|
-             Expr OPERADORESA Expr|
-             Expr OPERADORESC Expr|
-             Expr OPERADORESL Expr|
-             Expr MENOS Expr|
-             Expr IGUAL Expr|
+             Expr:e1 OPERADORESA:operador Expr:e2{:RESULT = e1.toString()+operador.toString()+e2.toString();:}|
+             Expr:e1 OPERADORESC:operador Expr:e2{:RESULT = e1.toString()+operador.toString()+e2.toString();:}|
+             Expr:e1 OPERADORESL:operador Expr:e2{:RESULT = e1.toString()+operador.toString()+e2.toString();:}|
+             Expr:e1 MENOS Expr:e2{:RESULT = e1.toString()+"-"+e2.toString();:}|
+             Expr:e1 IGUAL Expr.e2{:RESULT = e1.toString()+"="+e2.toString();:}|
              MENOS Expr|
              NEGACION Expr|
              NUEVO PAR_A IDENTIFICADOR PAR_C|
@@ -290,7 +259,7 @@ start with Programa;
              M_OC PAR_A Expr PAR_C
     ;
 
-    LValue ::= IDENTIFICADOR|
+    LValue ::= IDENTIFICADOR:id{RESULT = id.toString();}|
                Expr PUNTO IDENTIFICADOR|
                Expr CORCH_A Expr CORCH_C
     ;
@@ -307,9 +276,9 @@ start with Programa;
     Actuals ::= ExprList|
     ;
 
-    Constant ::= ENTERO|
-                 DECIMAL|
-                 BOOLCONST|
+    Constant ::= ENTERO:entero{:RESULT = entero;:}|
+                 DECIMAL:decimal{:RESULT= decimal;:}|
+                 BOOLCONST:bo{:RESULT = bo;:}|
                  TEXTO|
                  NULO
     ;
