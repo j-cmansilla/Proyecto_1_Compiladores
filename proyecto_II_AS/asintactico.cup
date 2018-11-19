@@ -119,7 +119,6 @@ start with Programa;
         if(TablaDeSimbolos.getTabla().isEmpty()){
             TablaDeSimbolos.getTabla().put(key,valor);
             TablaDeSimbolos.getTabla().imprimirTabla(valor);
-            
         }else{
             if (!TablaDeSimbolos.getTabla().contains(key)){
                 TablaDeSimbolos.getTabla().put(key,valor);
