@@ -118,6 +118,7 @@ start with Programa;
         Value valor = new Value(id.toString(), tipo.toString(),TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), "variable", true,TablaDeSimbolos.getTabla().getFuncionActual());
         if(TablaDeSimbolos.getTabla().isEmpty()){
             TablaDeSimbolos.getTabla().put(key,valor);
+            //prueba
             TablaDeSimbolos.getTabla().imprimirTabla(valor);
         }else{
             if (!TablaDeSimbolos.getTabla().contains(key)){
