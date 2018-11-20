@@ -61,6 +61,9 @@ public class Principal {
     }
     
     public static void main(String[] args) {
+        TablaDeSimbolos.getTabla().setArchivoActual("");
+        TablaDeSimbolos.getTabla().setTipoActual("");
+        TablaDeSimbolos.getTabla().setAmbitoActual(0);
         AnalizadorSintacticoInterfaz.getAnalizador().show();
     }
 

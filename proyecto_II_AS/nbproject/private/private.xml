@@ -3,8 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/2018/Universidad/Compiladores/Proyectos/Proyecto_1_Compiladores/proyecto_II_AS/src/analizadores/AnalizadorSintacticoInterfaz.java</file>
-            <file>file:/D:/2018/Universidad/Compiladores/Proyectos/Proyecto_1_Compiladores/proyecto_II_AS/src/analizadores/Principal.java</file>
+            <file>file:/C:/Users/JMansilla/Documents/Proyecto_1_Compiladores-Parte_II_AnalizadorSintactico/proyecto_II_AS/src/analizadores/Principal.java</file>
+            <file>file:/C:/Users/JMansilla/Documents/Proyecto_1_Compiladores-Parte_II_AnalizadorSintactico/proyecto_II_AS/src/analizadores/Value.java</file>
+            <file>file:/C:/Users/JMansilla/Documents/Proyecto_1_Compiladores-Parte_II_AnalizadorSintactico/proyecto_II_AS/src/analizadores/AnalizadorSintactico.java</file>
+            <file>file:/C:/Users/JMansilla/Documents/Proyecto_1_Compiladores-Parte_II_AnalizadorSintactico/proyecto_II_AS/src/analizadores/AnalizadorSintacticoInterfaz.java</file>
+            <file>file:/C:/Users/JMansilla/Documents/Proyecto_1_Compiladores-Parte_II_AnalizadorSintactico/proyecto_II_AS/src/analizadores/sym.java</file>
+            <file>file:/C:/Users/JMansilla/Documents/Proyecto_1_Compiladores-Parte_II_AnalizadorSintactico/proyecto_II_AS/src/analizadores/TablaDeSimbolos.java</file>
         </group>
     </open-files>
 </project-private>

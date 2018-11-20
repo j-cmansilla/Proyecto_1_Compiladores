@@ -189,6 +189,9 @@ public class AnalizadorSintacticoInterfaz extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         txtSalida.setText("> Archivo: "+seleccionarArchivo.getSelectedFile().getAbsolutePath()+" seleccionado!"+System.getProperty("line.separator"));
+        TablaDeSimbolos.getTabla().setArchivoActual(seleccionarArchivo.getSelectedFile().getName());
+        
+        //JOptionPane.showMessageDialog(rootPane, seleccionarArchivo.getSelectedFile().getName().toString());
         btnEjecutar.setEnabled(true);
     }//GEN-LAST:event_seleccionarArchivoActionPerformed
 

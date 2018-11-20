@@ -102,15 +102,18 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
       estados intermedios.*/
 
 <YYINITIAL> {
-    {ComentarioError} {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
+    //{ComentarioError} {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
     {Comment} {}
-    {textoError}   {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
+    //{textoError}   {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
 
     ";"     {   System.out.print(yytext());
                       return symbol(sym.PUNTOYCOMA, yytext()); }
 
     "[]"   {   System.out.print(yytext());
                 return symbol(sym.CORCH, yytext()); }
+
+    "const"   {   System.out.print(yytext());
+        return symbol(sym.CONSTANTE, yytext()); }
 
     "void"   {   System.out.print(yytext());
                 return symbol(sym.VD, yytext()); }
