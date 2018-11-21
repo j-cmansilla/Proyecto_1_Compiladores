@@ -19,6 +19,34 @@ import sun.java2d.pipe.ValidatePipe;
 public class TablaDeSimbolos {
 
     /**
+     * @return the Linea
+     */
+    public int getLinea() {
+        return Linea;
+    }
+
+    /**
+     * @param Linea the Linea to set
+     */
+    public void setLinea(int Linea) {
+        this.Linea = Linea;
+    }
+
+    /**
+     * @return the Columna
+     */
+    public int getColumna() {
+        return Columna;
+    }
+
+    /**
+     * @param Columna the Columna to set
+     */
+    public void setColumna(int Columna) {
+        this.Columna = Columna;
+    }
+
+    /**
      * @return the ClaseActual
      */
     public String getClaseActual() {
@@ -88,7 +116,7 @@ public class TablaDeSimbolos {
         this.ArchivoActual = ArchivoActual;
     }
 
-    
+   
     
     private static TablaDeSimbolos miTabla;
  
@@ -104,6 +132,8 @@ public class TablaDeSimbolos {
         return miTabla;
     }
     
+    private int Linea; 
+    private int Columna;
     private String TipoActual;
     private int AmbitoActual;
     private String ArchivoActual; 
@@ -183,8 +213,10 @@ public class TablaDeSimbolos {
     }
     
     public boolean asignarValor(String valor){
-        if (valor.equals("")) {
-            
+        Value actualValor = get(valor.split(",")[0]);
+        String llave = valor.split(",")[0];
+        if (actualValor == null) {
+            AnalizadorSintacticoInterfaz.getAnalizador().setError("# ERROR SEMANTICO, Línea:"+Linea+", Columna: "+Columna+". Variable: "+llave+" no está definida.");
         }
         return false;
     }

@@ -106,149 +106,194 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
     {Comment} {}
     //{textoError}   {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
 
-    ";"     {   System.out.print(yytext());
+    ";"     {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+                TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.PUNTOYCOMA, yytext()); }
 
-    "[]"   {   System.out.print(yytext());
+    "[]"   {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CORCH, yytext()); }
 
-    "const"   {   System.out.print(yytext());
+    "const"   {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
         return symbol(sym.CONSTANTE, yytext()); }
 
-    "void"   {   System.out.print(yytext());
+    "void"   {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.VD, yytext()); }
 
-    "("      {   System.out.print(yytext());
+    "("      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PAR_A, yytext()); }
 
-    ")"      {   System.out.print(yytext());
+    ")"      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PAR_C, yytext()); }
 
-    ","     {   System.out.print(yytext());
+    ","     {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.COMA, yytext()); }
 
-    "class" {   System.out.print(yytext());
+    "class" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CLASE, yytext()); }
 
-    "extends" {   System.out.print(yytext());
+    "extends" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.HERENCIA, yytext()); }
 
-    "implements" {   System.out.print(yytext());
+    "implements" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.IMPLEMENTA, yytext()); }
 
-    "interface" {   System.out.print(yytext());
+    "interface" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.INTERFAZ, yytext()); }
 
-    "if" {   System.out.print(yytext());
+    "if" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.SI, yytext()); }
 
-    "else" {   System.out.print(yytext());
+    "else" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.SINO, yytext()); }
 
-    "for" {   System.out.print(yytext());
+    "for" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PARA, yytext()); }
 
-    "while" {   System.out.print(yytext());
+    "while" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.MIENTRAS, yytext()); }
 
-    "return" {   System.out.print(yytext());
+    "return" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.RETORNA, yytext()); }
 
-    "break" {   System.out.print(yytext());
+    "break" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.ROMPE, yytext()); }
 
-    "Print" {   System.out.print(yytext());
+    "Print" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.IMPRIMIR, yytext()); }
 
-    "this" {   System.out.print(yytext());
+    "this" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.ESTO, yytext()); }
 
-    "int" {   System.out.print(yytext());
+    "int" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDE, yytext()); }
 
-    "double" {   System.out.print(yytext());
+    "double" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDD, yytext()); }
 
-    "bool" {   System.out.print(yytext());
+    "bool" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDB, yytext()); }
 
-    "string" {   System.out.print(yytext());
+    "string" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDS, yytext()); }
 
-    "[" {   System.out.print(yytext());
+    "[" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CORCH_A, yytext()); }
 
-    "]" {   System.out.print(yytext());
+    "]" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CORCH_C, yytext()); }
 
-    "{" {   System.out.print(yytext());
+    "{" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LL_A, yytext()); }
 
-    "}" {   System.out.print(yytext());
+    "}" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LL_C, yytext()); }
 
 
-    "!"  {   System.out.print(yytext());
+    "!"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NEGACION, yytext()); }
 
-    "Malloc"  {   System.out.print(yytext());
+    "Malloc"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.M_OC, yytext()); }
 
-    "ReadInteger"  {   System.out.print(yytext());
+    "ReadInteger"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LEER_EN, yytext()); }
 
-    "ReadLine" {   System.out.print(yytext());
+    "ReadLine" {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LEER_LIN, yytext()); }
 
-    "."  {   System.out.print(yytext());
+    "."  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PUNTO, yytext()); }
 
-    "null"  {   System.out.print(yytext());
+    "null"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NULO, yytext()); }
 
-    "New"  {   System.out.print(yytext());
+    "New"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NUEVO, yytext()); }
 
-    "NewArray"  {   System.out.print(yytext());
+    "NewArray"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NUEVO_A, yytext()); }
 
-    "GetByte"  {   System.out.print(yytext());
+    "GetByte"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.OBTENER_BYTES, yytext()); }
 
-    "SetByte"  {   System.out.print(yytext());
+    "SetByte"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.SET_BYTES, yytext()); }
 
-    "-"  {   System.out.print(yytext());
+    "-"  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.MENOS, yytext()); }
 
-    "="  {   System.out.print(yytext());
+    "="  {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.IGUAL, yytext()); }
 
 
     {TipoDeDatoL} {return symbol(sym.BOOLCONST, yytext()); }
 
-    {OperadoresA}      {   System.out.print(yytext());
+    {OperadoresA}      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.OPERADORESA, yytext()); }
 
     /* Si se encuentra un entero, se imprime, se regresa un token numero
         que representa un entero y el valor que se obtuvo de la cadena yytext
         al convertirla a entero. yytext es el token encontrado. */
-    {Real}      {   System.out.print(yytext());
+    {Real}      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.DECIMAL, yytext()); }
 
-    {Entero}      {   System.out.print(yytext());
+    {Entero}      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.ENTERO, yytext()); }
 
-    {Hexadecimal}      {   System.out.print(yytext());
+    {Hexadecimal}      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.ENTERO, yytext()); }
 
     {OperadoresC}     {return symbol(sym.OPERADORESC, yytext());}
 
     {OperadoresL}     {return symbol(sym.OPERADORESL, yytext());}
 
-    {Identificador}      {   System.out.print(yytext());
+    {Identificador}      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.IDENTIFICADOR, yytext()); }
-    {Textos}      {   System.out.print(yytext());
+    {Textos}      {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.TEXTO, yytext()); }
 
     /* No hace nada si encuentra el espacio en blanco */

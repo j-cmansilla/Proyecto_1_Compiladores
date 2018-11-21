@@ -893,17 +893,20 @@ class AnalizadorLexico implements java_cup.runtime.Scanner {
           }
         case 52: break;
         case 3: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.IDENTIFICADOR, yytext());
           }
         case 53: break;
         case 4: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.ENTERO, yytext());
           }
         case 54: break;
         case 5: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.OPERADORESA, yytext());
           }
         case 55: break;
@@ -912,67 +915,80 @@ class AnalizadorLexico implements java_cup.runtime.Scanner {
           }
         case 56: break;
         case 7: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.IGUAL, yytext());
           }
         case 57: break;
         case 8: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NEGACION, yytext());
           }
         case 58: break;
         case 9: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PUNTO, yytext());
           }
         case 59: break;
         case 10: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+                TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.PUNTOYCOMA, yytext());
           }
         case 60: break;
         case 11: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CORCH_A, yytext());
           }
         case 61: break;
         case 12: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CORCH_C, yytext());
           }
         case 62: break;
         case 13: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PAR_A, yytext());
           }
         case 63: break;
         case 14: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PAR_C, yytext());
           }
         case 64: break;
         case 15: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.COMA, yytext());
           }
         case 65: break;
         case 16: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LL_A, yytext());
           }
         case 66: break;
         case 17: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LL_C, yytext());
           }
         case 67: break;
         case 18: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.MENOS, yytext());
           }
         case 68: break;
         case 19: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.DECIMAL, yytext());
           }
         case 69: break;
@@ -985,42 +1001,50 @@ class AnalizadorLexico implements java_cup.runtime.Scanner {
           }
         case 71: break;
         case 22: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                       return symbol(sym.TEXTO, yytext());
           }
         case 72: break;
         case 23: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CORCH, yytext());
           }
         case 73: break;
         case 24: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.SI, yytext());
           }
         case 74: break;
         case 25: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.PARA, yytext());
           }
         case 75: break;
         case 26: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDE, yytext());
           }
         case 76: break;
         case 27: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NUEVO, yytext());
           }
         case 77: break;
         case 28: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.SINO, yytext());
           }
         case 78: break;
         case 29: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDB, yytext());
           }
         case 79: break;
@@ -1029,102 +1053,122 @@ class AnalizadorLexico implements java_cup.runtime.Scanner {
           }
         case 80: break;
         case 31: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.ESTO, yytext());
           }
         case 81: break;
         case 32: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NULO, yytext());
           }
         case 82: break;
         case 33: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.VD, yytext());
           }
         case 83: break;
         case 34: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.ROMPE, yytext());
           }
         case 84: break;
         case 35: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.CLASE, yytext());
           }
         case 85: break;
         case 36: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
         return symbol(sym.CONSTANTE, yytext());
           }
         case 86: break;
         case 37: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.MIENTRAS, yytext());
           }
         case 87: break;
         case 38: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.IMPRIMIR, yytext());
           }
         case 88: break;
         case 39: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDD, yytext());
           }
         case 89: break;
         case 40: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.RETORNA, yytext());
           }
         case 90: break;
         case 41: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.TDS, yytext());
           }
         case 91: break;
         case 42: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.M_OC, yytext());
           }
         case 92: break;
         case 43: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.HERENCIA, yytext());
           }
         case 93: break;
         case 44: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.OBTENER_BYTES, yytext());
           }
         case 94: break;
         case 45: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.SET_BYTES, yytext());
           }
         case 95: break;
         case 46: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LEER_LIN, yytext());
           }
         case 96: break;
         case 47: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.NUEVO_A, yytext());
           }
         case 97: break;
         case 48: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.INTERFAZ, yytext());
           }
         case 98: break;
         case 49: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.IMPLEMENTA, yytext());
           }
         case 99: break;
         case 50: 
-          { System.out.print(yytext());
+          { TablaDeSimbolos.getTabla().setLinea(yyline+1);
+            TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
                 return symbol(sym.LEER_EN, yytext());
           }
         case 100: break;
