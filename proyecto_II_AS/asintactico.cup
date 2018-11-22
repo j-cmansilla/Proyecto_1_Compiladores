@@ -53,6 +53,8 @@ parser code {:
         }
     }
 
+
+
     public static void main(String[] args){
         try {
             AnalizadorSintactico asin = new AnalizadorSintactico(
@@ -74,13 +76,13 @@ parser code {:
 
 terminal  Object  OPERADORESA,IDENTIFICADOR,PUNTOYCOMA,TDE,TDD,TDB,BOOLCONST,TDS,VD,PAR_A,PAR_C,COMA,CLASE,HERENCIA,IMPLEMENTA,INTERFAZ,
                   SI, SINO,PARA,MIENTRAS,RETORNA,ROMPE,IMPRIMIR,ESTO,CORCH_A,CORCH,CORCH_C,LL_A,LL_C,NEGACION,M_OC,LEER_EN,
-                  LEER_LIN,PUNTO,DECIMAL,ENTERO,TEXTO,NULO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL,OPERADORESC,OPERADORESL,CONSTANTE;
+                  LEER_LIN,PUNTO,DECIMAL,INCLUDES,ENTERO,TEXTO,NULO,ARCHIVO,NUEVO,NUEVO_A,OBTENER_BYTES,SET_BYTES,MENOS,IGUAL,OPERADORESC,OPERADORESL,CONSTANTE;
 
 /* No terminales usados en la seccion gramatical. */
 non terminal Object     Programa, Decl, VariableDecl,FunctionDecl,InterfaceDecl,Variable,Tipo,Formals,StmtBlock,ClassDecl,Field,
                         Herencias,Implementar,Prototype,Stmt,Expr,IfStmt,WhileStmt,ForStmt,BreakStmt,ReturnStmt,PrintStmt,RepetirField,
                         VariableDeclRepetir,SmtmRepetir,ExprRepetir,ElseRepetir,LValue,Constant,Call,Actuals,LibCall,DeclRep,
-                        ReptPrototype,VariableList,IDList,ExprList;
+                        ReptPrototype,Referencias,VariableList,IDList,ExprList;
 
 
 precedence left IGUAL;
@@ -94,6 +96,7 @@ precedence nonassoc SINO;
 
 start with Programa;
 //GRAMATICA
+
     Programa ::= Decl DeclRep
     ;
 
@@ -102,8 +105,16 @@ start with Programa;
              ClassDecl|
              InterfaceDecl|
              error PUNTOYCOMA|
-             error LL_C
+             error LL_C|
+             INCLUDES ARCHIVO:arch{:
+               String archivo;
+               archivo = arch.toString().replace('<',' ');
+               archivo = archivo.toString().replace('>',' ');
+               archivo = archivo.trim();
+               archivo = "C:\\Users\\JMansilla\\Documents\\"+archivo;
+               //TablaDeSimbolos.getTabla().analizadorSintact(archivo);:}
     ;
+
     DeclRep ::= DeclRep Decl|
     ;
 
@@ -236,17 +247,17 @@ start with Programa;
     PrintStmt ::= IMPRIMIR PAR_A ExprList PAR_C PUNTOYCOMA
     ;
 
-    Expr ::= LValue:valor IGUAL Expr:e{:TablaDeSimbolos.getTabla().asignarValor(valor.toString()+","+e.toString());:}|
+    Expr ::= LValue:valor IGUAL Expr:e{:/*TablaDeSimbolos.getTabla().asignarValor(valor.toString()+","+e.toString());*/:}|
              Constant:valor{:RESULT=valor.toString();:}|
              LValue|
              ESTO|
              Call|
              PAR_A Expr PAR_C|
-             Expr:e1 OPERADORESA:operador Expr:e2{:RESULT = e1.toString()+","+operador.toString()+","+e2.toString();:}|
-             Expr:e1 OPERADORESC:operador Expr:e2{:RESULT = e1.toString()+","+operador.toString()+","+e2.toString();:}|
-             Expr:e1 OPERADORESL:operador Expr:e2{:RESULT = e1.toString()+","+operador.toString()+","+e2.toString();:}|
-             Expr:e1 MENOS Expr:e2{:RESULT = e1.toString()+","+"-"+","+e2.toString();:}|
-             Expr:e1 IGUAL Expr:e2{:RESULT = e1.toString()+","+"="+","+e2.toString();:}|
+             Expr:e1 OPERADORESA:operador Expr:e2{:/*RESULT = e1.toString()+","+operador.toString()+","+e2.toString();*/:}|
+             Expr:e1 OPERADORESC:operador Expr:e2{:/*RESULT = e1.toString()+","+operador.toString()+","+e2.toString();*/:}|
+             Expr:e1 OPERADORESL:operador Expr:e2{:/*RESULT = e1.toString()+","+operador.toString()+","+e2.toString();*/:}|
+             Expr:e1 MENOS Expr:e2{:/*RESULT = e1.toString()+","+"-"+","+e2.toString();*/:}|
+             Expr:e1 IGUAL Expr:e2{:/*RESULT = e1.toString()+","+"="+","+e2.toString();*/:}|
              MENOS Expr|
              NEGACION Expr|
              NUEVO PAR_A IDENTIFICADOR PAR_C|
@@ -257,7 +268,7 @@ start with Programa;
     ;
 
     LValue ::= IDENTIFICADOR:id{:RESULT = id.toString();:}|
-               Expr PUNTO IDENTIFICADOR|
+               Expr:ex PUNTO IDENTIFICADOR:id{:RESULT = ex.toString()+"."+id.toString();:}|
                Expr CORCH_A Expr CORCH_C
     ;
 

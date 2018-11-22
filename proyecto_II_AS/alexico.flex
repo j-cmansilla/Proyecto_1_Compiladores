@@ -58,6 +58,8 @@ WHITE=[ \t\r\n]
 L = [a-zA-Z_]
 D = [0-9]
 ComentarioError   = "/*" [^*]+
+Archivo = "<" ~{LineTerminator}
+Includes = "#include"
 OperadoresA = "+"|"*"|"/"|"%"
 OperadoresC = "<"|"<="|">"|">="|"=="|"!="
 OperadoresL = "&&"|"||"
@@ -103,8 +105,15 @@ EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
 
 <YYINITIAL> {
     //{ComentarioError} {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
+    {Includes} {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+                TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
+                      return symbol(sym.INCLUDES, yytext()); }
+    {Archivo} {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
+                TablaDeSimbolos.getTabla().setColumna(yycolumn+1);
+                      return symbol(sym.ARCHIVO, yytext()); }
     {Comment} {}
     //{textoError}   {AnalizadorSintacticoInterfaz.getAnalizador().setError("Error Lexico, token:   "+yytext()+"     , linea: "+(1+yyline)+" , columna: "+(yycolumn+1)+". Token no valido!");AnalizadorSintacticoInterfaz.getAnalizador().error = true;}
+
 
     ";"     {   TablaDeSimbolos.getTabla().setLinea(yyline+1);
                 TablaDeSimbolos.getTabla().setColumna(yycolumn+1);

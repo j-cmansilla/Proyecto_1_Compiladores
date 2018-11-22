@@ -6,6 +6,7 @@
 
 package analizadores;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -212,13 +213,29 @@ public class TablaDeSimbolos {
         }
     }
     
+    public void analizadorSintact(String args){
+        try {
+            AnalizadorSintactico asin = new AnalizadorSintactico(
+                    new AnalizadorLexico( new FileReader(args)));
+            Object result = asin.parse().value;
+            if(!AnalizadorSintacticoInterfaz.getAnalizador().error){
+              AnalizadorSintacticoInterfaz.getAnalizador().setError("> Archivo correctamente analizado! No contiene errores!");
+            }
+
+            System.out.println("\n*** Resultados finales ***");
+        } catch (Exception ex) {
+
+        }
+    }
+    
     public boolean asignarValor(String valor){
-        Value actualValor = get(valor.split(",")[0]);
+        /*Value actualValor = get(valor.split(",")[0]);
         String llave = valor.split(",")[0];
         if (actualValor == null) {
             AnalizadorSintacticoInterfaz.getAnalizador().setError("# ERROR SEMANTICO, Línea:"+Linea+", Columna: "+Columna+". Variable: "+llave+" no está definida.");
         }
-        return false;
+        return false;*/
+        return true;
     }
     
     public void imprimirTabla(Value value){

@@ -191,6 +191,7 @@ public class AnalizadorSintacticoInterfaz extends javax.swing.JFrame {
         TablaDeSimbolos.getTabla().setArchivoActual(seleccionarArchivo.getSelectedFile().getName());
         
         //JOptionPane.showMessageDialog(rootPane, seleccionarArchivo.getSelectedFile().getName().toString());
+        
         btnEjecutar.setEnabled(true);
     }//GEN-LAST:event_seleccionarArchivoActionPerformed
 
