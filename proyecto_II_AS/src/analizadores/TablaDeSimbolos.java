@@ -231,9 +231,11 @@ public class TablaDeSimbolos {
     
     public boolean asignarValor(String valor){
         Value actualValor = null;
+        String ambito = "";
         for (int i = 0; i < getAmbitoActual(); i++) {
             if (actualValor == null) {
                 actualValor = get(valor.split(",")[0]+getArchivoActual()+(i+1)); 
+                ambito = String.valueOf(i);
             }
         }
         
@@ -243,6 +245,8 @@ public class TablaDeSimbolos {
         }else{ 
             AnalizadorSintacticoInterfaz.getAnalizador().setError("# Línea:"+Linea+", Columna: "+Columna+". Variable: "+llave+" valor actualizado a: "+valor.split(",")[1]);
             actualValor.setValor(valor.split(",")[1]);
+            delete(llave+getArchivoActual()+ambito);
+            put(llave+getArchivoActual()+ambito,actualValor);
         }
         return false;
     }
@@ -296,12 +300,12 @@ public class TablaDeSimbolos {
                     if (valor2.equals("")) {
                         valor2 = variable2;
                     }
-                    if (variable1.contains(".") || variable2.contains(".")) {
+                    if (valor1.contains(".") || valor2.contains(".")) {
                         double primera= Double.parseDouble(variable1);
                         double segunda = Double.parseDouble(variable2);
                         return String.valueOf(primera-segunda);
                     }
-                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                    if (!valor1.contains(".") && !valor2.contains(".") ) {
                         int primera = Integer.parseInt(variable1);
                         int segunda = Integer.parseInt(variable2);
                         return String.valueOf(primera-segunda);
@@ -317,12 +321,12 @@ public class TablaDeSimbolos {
                     if (valor2.equals("")) {
                         valor2 = variable2;
                     }
-                    if (variable1.contains(".") || variable2.contains(".")) {
+                    if (valor1.contains(".") || valor2.contains(".")) {
                         double primera= Double.parseDouble(variable1);
                         double segunda = Double.parseDouble(variable2);
                         return String.valueOf(primera*segunda);
                     }
-                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                    if (!valor1.contains(".") && !valor2.contains(".") ) {
                         int primera = Integer.parseInt(variable1);
                         int segunda = Integer.parseInt(variable2);
                         return String.valueOf(primera*segunda);
@@ -339,12 +343,12 @@ public class TablaDeSimbolos {
                     if (valor2.equals("")) {
                         valor2 = variable2;
                     }
-                    if (variable1.contains(".") || variable2.contains(".")) {
+                    if (valor1.contains(".") || valor2.contains(".")) {
                         double primera= Double.parseDouble(variable1);
                         double segunda = Double.parseDouble(variable2);
                         return String.valueOf(primera%segunda);
                     }
-                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                    if (!valor1.contains(".") && !valor2.contains(".") ) {
                         int primera = Integer.parseInt(variable1);
                         int segunda = Integer.parseInt(variable2);
                         return String.valueOf(primera%segunda);
@@ -359,12 +363,12 @@ public class TablaDeSimbolos {
                     if (valor2.equals("")) {
                         valor2 = variable2;
                     }
-                    if (variable1.contains(".") || variable2.contains(".")) {
+                    if (valor1.contains(".") || valor2.contains(".")) {
                         double primera= Double.parseDouble(variable1);
                         double segunda = Double.parseDouble(variable2);
                         return String.valueOf(primera/segunda);
                     }
-                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                    if (!valor1.contains(".") && !valor2.contains(".") ) {
                         int primera = Integer.parseInt(variable1);
                         int segunda = Integer.parseInt(variable2);
                         return String.valueOf(primera/segunda);
