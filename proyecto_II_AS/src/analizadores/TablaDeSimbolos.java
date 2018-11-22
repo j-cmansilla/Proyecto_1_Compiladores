@@ -162,6 +162,7 @@ public class TablaDeSimbolos {
             TablaDeSimbolos.getTabla().imprimirTabla(valor);
             return true;
         }else{
+            
             if (!TablaDeSimbolos.getTabla().contains(key)){
                 TablaDeSimbolos.getTabla().put(key,valor);
                 TablaDeSimbolos.getTabla().imprimirTabla(valor);
@@ -229,13 +230,36 @@ public class TablaDeSimbolos {
     }
     
     public boolean asignarValor(String valor){
-        /*Value actualValor = get(valor.split(",")[0]);
+        Value actualValor = null;
+        for (int i = 0; i < getAmbitoActual(); i++) {
+            if (actualValor == null) {
+                actualValor = get(valor.split(",")[0]+getArchivoActual()+(i+1)); 
+            }
+        }
+        
         String llave = valor.split(",")[0];
         if (actualValor == null) {
             AnalizadorSintacticoInterfaz.getAnalizador().setError("# ERROR SEMANTICO, Línea:"+Linea+", Columna: "+Columna+". Variable: "+llave+" no está definida.");
+        }else{
+            
         }
-        return false;*/
-        return true;
+        return false;
+    }
+    
+    public String realizarOperacion(String variable1, String variable2, String operador){
+        switch(operador){
+            case "+": 
+                break;
+            case "-":
+                break;
+            case "*":
+                break;
+            case "%":
+                break;
+            case "/":
+                break;
+        }
+        return "";
     }
     
     public void imprimirTabla(Value value){
