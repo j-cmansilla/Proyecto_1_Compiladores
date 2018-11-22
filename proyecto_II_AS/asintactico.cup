@@ -247,19 +247,19 @@ start with Programa;
     PrintStmt ::= IMPRIMIR PAR_A ExprList PAR_C PUNTOYCOMA
     ;
 
-    Expr ::= LValue:valor IGUAL Expr:e{: TablaDeSimbolos.getTabla().asignarValor(valor.toString()+","+e.toString());:}|
+    Expr ::= LValue:valor IGUAL Expr:e{: /*TablaDeSimbolos.getTabla().asignarValor(valor.toString()+","+e.toString());*/:}|
              Constant:valor{:RESULT=valor.toString();:}|
              LValue:id{:RESULT = id.toString();:}|
              ESTO|
              Call:c{:RESULT = c.toString();:}|
              PAR_A Expr PAR_C|
-             Expr:e1 OPERADORESA:operador Expr:e2{:JOptionPane.showMessageDialog(null, "ASIGNARVALOR: "+e1.toString()+","+operador.toString()+","+e2.toString());
+             Expr:e1 OPERADORESA:operador Expr:e2{:/*JOptionPane.showMessageDialog(null, "ASIGNARVALOR: "+e1.toString()+","+operador.toString()+","+e2.toString());*/
              :}|
              Expr:e1 OPERADORESC:operador Expr:e2{:/*RESULT = e1.toString()+","+operador.toString()+","+e2.toString();*/:}|
              Expr:e1 OPERADORESL:operador Expr:e2{:/*RESULT = e1.toString()+","+operador.toString()+","+e2.toString();*/:}|
-             Expr:e1 MENOS Expr:e2{:
+             Expr:e1 MENOS Expr:e2{:/*
                 JOptionPane.showMessageDialog(null, "ASIGNAR: "+e1.toString()+","+"-"+","+e2.toString());
-               /*RESULT = e1.toString()+","+"-"+","+e2.toString();*/:}|
+               RESULT = e1.toString()+","+"-"+","+e2.toString();*/:}|
              Expr:e1 IGUAL Expr:e2{:/*RESULT = e1.toString()+","+"="+","+e2.toString();*/:}|
              MENOS Expr|
              NEGACION Expr|
@@ -271,7 +271,7 @@ start with Programa;
     ;
 
     LValue ::= IDENTIFICADOR:id{:RESULT = id.toString();:}|
-               Expr:ex PUNTO IDENTIFICADOR:id{:RESULT = ex.toString()+"."+id.toString();:}|
+               Expr:ex PUNTO IDENTIFICADOR:id{:/*RESULT = ex.toString()+"."+id.toString();*/:}|
                Expr CORCH_A Expr CORCH_C
     ;
 
