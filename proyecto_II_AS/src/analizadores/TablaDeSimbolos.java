@@ -153,7 +153,7 @@ public class TablaDeSimbolos {
         if (tipoDeDato.equals("bool")) {
           value = "true";
         }
-        if (tipoDeDato.equals("string")) {
+        if (tipoDeDato.equals("cadena")) {
           value = "";
         }
         Value valor = new Value(id, tipoDeDato,TablaDeSimbolos.getTabla().getAmbitoActual(), TablaDeSimbolos.getTabla().getArchivoActual(), TablaDeSimbolos.getTabla().getClaseActual(), tipo, true,TablaDeSimbolos.getTabla().getFuncionActual(),value);
