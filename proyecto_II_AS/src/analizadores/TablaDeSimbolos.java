@@ -240,23 +240,135 @@ public class TablaDeSimbolos {
         String llave = valor.split(",")[0];
         if (actualValor == null) {
             AnalizadorSintacticoInterfaz.getAnalizador().setError("# ERROR SEMANTICO, Línea:"+Linea+", Columna: "+Columna+". Variable: "+llave+" no está definida.");
-        }else{
-            
+        }else{ 
+            AnalizadorSintacticoInterfaz.getAnalizador().setError("# Línea:"+Linea+", Columna: "+Columna+". Variable: "+llave+" valor actualizado a: "+valor.split(",")[1]);
+            actualValor.setValor(valor.split(",")[1]);
         }
         return false;
     }
     
+    public String getValue(String variable){
+        Value actualValor = null;
+        for (int i = 0; i < getAmbitoActual(); i++) {
+            if (actualValor == null) {
+                actualValor = get(variable.split(",")[0]+getArchivoActual()+(i+1)); 
+            }
+        }
+        if (actualValor==null) {
+            return "";
+        }else{
+            return actualValor.getValor();
+        }
+    }
+    
     public String realizarOperacion(String variable1, String variable2, String operador){
+        String resultado = "";
+        String valor1 = "";
+        String valor2 = "";
         switch(operador){
             case "+": 
+                valor1 = getValue(variable1);
+                valor2 = getValue(variable2);
+                if (valor1.equals("")) {
+                    valor1 = variable1;
+                }
+                if (valor2.equals("")) {
+                    valor2 = variable2;
+                }
+                if (valor1.contains(".") || valor2.contains(".")) {
+                        double primera= Double.parseDouble(variable1);
+                        double segunda = Double.parseDouble(variable2);
+                        return String.valueOf(primera+segunda);
+                    }
+                    if (!valor1.contains(".") && !valor2.contains(".") ) {
+                        int primera = Integer.parseInt(variable1);
+                        int segunda = Integer.parseInt(variable2);
+                        return String.valueOf(primera+segunda);
+                    }
+                    
                 break;
             case "-":
+                valor1 = getValue(variable1);
+                    valor2 = getValue(variable2);
+                    if (valor1.equals("")) {
+                        valor1 = variable1;
+                    }
+                    if (valor2.equals("")) {
+                        valor2 = variable2;
+                    }
+                    if (variable1.contains(".") || variable2.contains(".")) {
+                        double primera= Double.parseDouble(variable1);
+                        double segunda = Double.parseDouble(variable2);
+                        return String.valueOf(primera-segunda);
+                    }
+                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                        int primera = Integer.parseInt(variable1);
+                        int segunda = Integer.parseInt(variable2);
+                        return String.valueOf(primera-segunda);
+                    }
                 break;
             case "*":
+                try {
+                    valor1 = getValue(variable1);
+                    valor2 = getValue(variable2);
+                    if (valor1.equals("")) {
+                        valor1 = variable1;
+                    }
+                    if (valor2.equals("")) {
+                        valor2 = variable2;
+                    }
+                    if (variable1.contains(".") || variable2.contains(".")) {
+                        double primera= Double.parseDouble(variable1);
+                        double segunda = Double.parseDouble(variable2);
+                        return String.valueOf(primera*segunda);
+                    }
+                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                        int primera = Integer.parseInt(variable1);
+                        int segunda = Integer.parseInt(variable2);
+                        return String.valueOf(primera*segunda);
+                    }
+                } catch (Exception e) {
+                }
                 break;
             case "%":
+                valor1 = getValue(variable1);
+                    valor2 = getValue(variable2);
+                    if (valor1.equals("")) {
+                        valor1 = variable1;
+                    }
+                    if (valor2.equals("")) {
+                        valor2 = variable2;
+                    }
+                    if (variable1.contains(".") || variable2.contains(".")) {
+                        double primera= Double.parseDouble(variable1);
+                        double segunda = Double.parseDouble(variable2);
+                        return String.valueOf(primera%segunda);
+                    }
+                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                        int primera = Integer.parseInt(variable1);
+                        int segunda = Integer.parseInt(variable2);
+                        return String.valueOf(primera%segunda);
+                    }
                 break;
             case "/":
+                valor1 = getValue(variable1);
+                    valor2 = getValue(variable2);
+                    if (valor1.equals("")) {
+                        valor1 = variable1;
+                    }
+                    if (valor2.equals("")) {
+                        valor2 = variable2;
+                    }
+                    if (variable1.contains(".") || variable2.contains(".")) {
+                        double primera= Double.parseDouble(variable1);
+                        double segunda = Double.parseDouble(variable2);
+                        return String.valueOf(primera/segunda);
+                    }
+                    if (!variable1.contains(".") && !variable2.contains(".") ) {
+                        int primera = Integer.parseInt(variable1);
+                        int segunda = Integer.parseInt(variable2);
+                        return String.valueOf(primera/segunda);
+                    }
                 break;
         }
         return "";
